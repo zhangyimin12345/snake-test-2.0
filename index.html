@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake-test</title>
+    <style>
+        :root {
+            --bg-color: #1e1e1e;
+            --text-color: #d4d4d4;
+            --header-bg: #252526;
+            --sidebar-bg: #252526;
+            --sidebar-hover: #2a2d2e;
+            --content-bg: #1e1e1e;
+            --button-bg: #3498db;
+            --card-bg: #2d2d2d;
+            --card-border: #3a3a3a;
+            --highlight-color: #4CAF50;
+            --warning-color: #FFC107;
+            --danger-color: #F44336;
+        }
+
+        .light-theme {
+            --bg-color: #f5f5f5;
+            --text-color: #333333;
+            --header-bg: #ffffff;
+            --sidebar-bg: #f0f0f0;
+            --sidebar-hover: #e0e0e0;
+            --content-bg: #ffffff;
+            --button-bg: #2980b9;
+            --card-bg: #ffffff;
+            --card-border: #e0e0e0;
+            --highlight-color: #2E7D32;
+            --warning-color: #FF8F00;
+            --danger-color: #D32F2F;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .header {
+            background-color: var(--header-bg);
+            color: var(--text-color);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--sidebar-hover);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .luogu-btn {
+            padding: 6px 12px;
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .luogu-btn:hover {
+            background-color: var(--button-bg);
+            opacity: 0.9;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 80px;
+            background-color: var(--sidebar-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 4px;
+            width: 60px;
+            text-align: center;
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .sidebar-item:hover {
+            background-color: var(--sidebar-hover);
+        }
+
+        .sidebar-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-label {
+            font-size: 12px;
+        }
+
+        .content {
+            flex: 1;
+            background-color: var(--content-bg);
+            padding: 20px 20px 20px 40px;
+            transition: background-color 0.3s;
+            overflow-y: auto;
+        }
+
+        .content h1,
+        .content h3 {
+            margin-left: 20px;
+            max-width: 800px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, transform 0.2s;
+            z-index: 100;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* 算法模板库样式 */
+        .algorithm-section,
+        .calendar-section,
+        .roadmap-section,
+        .daily-section,
+        .weather-section {
+            display: none;
+        }
+
+        .algorithm-categories,
+        .calendar-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .category-btn,
+        .filter-btn {
+            padding: 8px 15px;
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .category-btn:hover,
+        .filter-btn:hover {
+            opacity: 0.9;
+        }
+
+        .algorithm-cards,
+        .calendar-events,
+        .roadmap-steps,
+        .daily-problems {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .algorithm-card,
+        .event-card,
+        .step-card,
+        .problem-card,
+        .weather-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 15px;
+            transition: transform 0.2s;
+        }
+
+        .algorithm-card:hover,
+        .event-card:hover,
+        .step-card:hover,
+        .problem-card:hover,
+        .weather-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .algorithm-title,
+        .event-title,
+        .step-title,
+        .problem-title,
+        .weather-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--button-bg);
+        }
+
+        .algorithm-desc,
+        .event-desc,
+        .step-desc,
+        .problem-desc,
+        .weather-desc {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .algorithm-code {
+            background-color: var(--sidebar-bg);
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            margin-bottom: 10px;
+        }
+
+        .copy-btn,
+        .view-btn {
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: opacity 0.3s;
+            margin-right: 5px;
+        }
+
+        .copy-btn:hover,
+        .view-btn:hover {
+            opacity: 0.9;
+        }
+
+        .active-section {
+            display: block;
+        }
+
+        /* 竞赛日历特定样式 */
+        .event-date {
+            font-weight: bold;
+            color: var(--highlight-color);
+            margin-bottom: 5px;
+        }
+
+        .event-platform {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .platform-luogu {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .platform-codeforces {
+            background-color: #3b5998;
+            color: white;
+        }
+
+        .platform-atcoder {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .platform-leetcode {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        /* 学习路线特定样式 */
+        .step-level {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .step-beginner {
+            color: var(--highlight-color);
+        }
+
+        .step-intermediate {
+            color: var(--warning-color);
+        }
+
+        .step-advanced {
+            color: var(--danger-color);
+        }
+
+        .step-resources {
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        /* 每日一题特定样式 */
+        .problem-difficulty {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+
+        .difficulty-easy {
+            background-color: var(--highlight-color);
+            color: white;
+        }
+
+        .difficulty-medium {
+            background-color: var(--warning-color);
+            color: black;
+        }
+
+        .difficulty-hard {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        /* 天气插件样式 */
+        .weather-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .weather-icon {
+            font-size: 36px;
+            margin-right: 15px;
+        }
+
+        .weather-temp {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .weather-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .weather-detail {
+            display: flex;
+            align-items: center;
+        }
+
+        .weather-detail i {
+            margin-right: 5px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* 时间显示样式 */
+        .time-display {
+            position: fixed;
+            top: 13px;
+            right: 110px;
+            font-size: 14px;
+            background-color: var(--header-bg);
+            padding: 5px 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 名人名言样式 */
+        .quote-container {
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            max-width: 300px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 99;
+        }
+
+        .quote-text {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .quote-author {
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .game-section {
+            display: none;
+        }
+
+        .game-section.active-section {
+            display: block;
+        }
+
+        .game-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 600px;
+        }
+
+        .game-btn {
+            padding: 15px;
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.2s;
+        }
+
+        .game-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .welcome-box {
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 20px;
+            background-color: var(--card-bg);
+            margin-bottom: 20px;
+        }
+
+        .modal {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+            z-index: 1000; /* 确保模态框在最上层 */
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 80%; /* 最大宽度为屏幕宽度的80% */
+            max-height: 80%; /* 最大高度为屏幕高度的80% */
+            overflow-y: auto; /* 内容过多时允许滚动 */
+        }
+
+        .close-btn {
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: red;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div class="header">
+        <div class="title">Snake-test</div>
+        <button class="luogu-btn" id="luogu-team-btn">洛谷团队</button>
+    </div>
+
+    <div class="time-display" id="time-display"></div>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="sidebar-item" id="game-link">
+                <div class="sidebar-icon"><i class="fas fa-gamepad"></i></div>
+                <div class="sidebar-label">小游戏</div>
+            </div>
+            <div class="sidebar-item" id="algorithm-link">
+                <div class="sidebar-icon"><i class="fas fa-code"></i></div>
+                <div class="sidebar-label">算法模板</div>
+            </div>
+            <div class="sidebar-item" id="calendar-link">
+                <div class="sidebar-icon"><i class="fas fa-calendar-alt"></i></div>
+                <div class="sidebar-label">竞赛日历</div>
+            </div>
+            <div class="sidebar-item" id="roadmap-link">
+                <div class="sidebar-icon"><i class="fas fa-map-signs"></i></div>
+                <div class="sidebar-label">学习路线</div>
+            </div>
+            <div class="sidebar-item" id="daily-link">
+                <div class="sidebar-icon"><i class="fas fa-question-circle"></i></div>
+                <div class="sidebar-label">每日一题</div>
+            </div>
+            <div class="sidebar-item" id="notes-link">
+                <div class="sidebar-icon"><i class="fas fa-book"></i></div>
+                <div class="sidebar-label">随手记</div>
+            </div>
+            <div class="sidebar-item" id="article-link">
+                <div class="sidebar-icon"><i class="fas fa-file-alt"></i></div>
+                <div class="sidebar-label">文章（暂未制作）</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Welcome模态框 -->
+            <div id="welcomeModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn">&times;</span>
+                    <div class="welcome-box">
+                        <h1>Welcome!</h1>
+                        <h3>欢迎来到Snake-test 2.0！本网站由zhangyimin12345制作，供snake集团成员使用。</h3>
+                        <h3>用于本人是个HTML辣鸡，有什么建议欢迎提出！</h3>
+                        <h3>本网站的主要功能都在侧边栏里，你可以点击查看。推荐用暗色主题。</h3>
+                        <h3>注：随手记即Markdown编辑器。</h3>
+                        <h3>注：小游戏·跑酷炸了，还没修好。有些地方缺斤少两，慢慢修吧。</h3>
+                        <h3>注：有些东西处于试验阶段，未补充资源或未调用API。“文章”板块还未制作。</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 小游戏内容 -->
+            <div id="game-section" class="game-section">
+                <h1>小游戏</h1>
+                <h3>选择您想玩的游戏</h3>
+
+                <div class="game-buttons">
+                    <button class="game-btn" data-game="parkour">简易跑酷</button>
+                    <button class="game-btn" data-game="tetris">俄罗斯方块</button>
+                    <button class="game-btn" data-game="minesweeper">扫雷</button>
+                    <button class="game-btn" data-game="snake">贪吃蛇</button>
+                </div>
+            </div>
+
+            <!-- 算法模板库内容 -->
+            <div id="algorithm-section" class="algorithm-section">
+                <h1>算法模板库</h1>
+                <h3>常用算法代码模板，点击分类查看，点击复制按钮可直接复制代码（未补充资源）</h3>
+
+                <div class="algorithm-categories">
+                    <button class="category-btn" data-category="sort">排序算法</button>
+                    <button class="category-btn" data-category="search">搜索算法</button>
+                    <button class="category-btn" data-category="graph">图论</button>
+                    <button class="category-btn" data-category="dp">动态规划</button>
+                    <button class="category-btn" data-category="math">数学</button>
+                </div>
+
+                <div class="algorithm-cards" id="algorithm-cards">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+
+            <!-- 竞赛日历内容 -->
+            <div id="calendar-section" class="calendar-section">
+                <h1>竞赛日历</h1>
+                <h3>近期编程竞赛时间表，点击平台筛选（未补充资源）</h3>
+
+                <div class="calendar-filters">
+                    <button class="filter-btn" data-platform="all">全部</button>
+                    <button class="filter-btn" data-platform="luogu">洛谷</button>
+                    <button class="filter-btn" data-platform="codeforces">Codeforces</button>
+                    <button class="filter-btn" data-platform="atcoder">AtCoder</button>
+                    <button class="filter-btn" data-platform="leetcode">LeetCode</button>
+                </div>
+
+                <div class="calendar-events" id="calendar-events">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+
+            <!-- 学习路线内容 -->
+            <div id="roadmap-section" class="roadmap-section">
+                <h1>编程学习路线</h1>
+                <h3>从入门到进阶的系统学习路径（未补充资源）</h3>
+
+                <div class="roadmap-steps" id="roadmap-steps">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+
+            <!-- 每日一题内容 -->
+            <div id="daily-section" class="daily-section">
+                <h1>每日一题</h1>
+                <h3>每日精选编程题目，提升算法能力（试验阶段）</h3>
+
+                <div class="daily-problems" id="daily-problems">
+                    <!-- 内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="theme-toggle" id="theme-toggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <div class="quote-container" id="quote-container">
+        <div class="quote-text" id="quote-text"></div>
+        <div class="quote-author" id="quote-author"></div>
+    </div>
+
+    <script src="https://api.vvhan.com/api/script/bolang"></script>
+    <script src="https://api.vvhan.com/api/script/snow"></script>
+
+    <script>
+        // 主题切换功能
+        const themeToggle = document.getElementById('theme-toggle');
+        const icon = themeToggle.querySelector('i');
+
+        // 检查本地存储的主题偏好
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-theme');
+            icon.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+
+            if (document.body.classList.contains('light-theme')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'light');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // 侧边栏导航功能
+        const sections = {
+            'game-link': 'game-section',
+            'algorithm-link': 'algorithm-section',
+            'calendar-link': 'calendar-section',
+            'roadmap-link': 'roadmap-section',
+            'daily-link': 'daily-section',
+            'notes-link': 'home-section',
+            'article-link': 'home-section'
+        };
+
+        Object.keys(sections).forEach(id => {
+            document.getElementById(id).addEventListener('click', function () {
+                // 隐藏所有部分
+                document.querySelectorAll('.algorithm-section, #home-section, .calendar-section, .roadmap-section, .daily-section, .game-section, .weather-section').forEach(section => {
+                    section.classList.remove('active-section');
+                });
+
+                // 显示选中的部分
+                const sectionToShow = sections[id];
+                document.getElementById(sectionToShow).classList.add('active-section');
+
+                // 根据部分加载相应内容
+                if (id === 'algorithm-link') {
+                    renderAlgorithmCards('sort');
+                } else if (id === 'calendar-link') {
+                    renderCalendarEvents('all');
+                } else if (id === 'roadmap-link') {
+                    renderRoadmapSteps();
+                } else if (id === 'daily-link') {
+                    renderDailyProblems();
+                } else if (id === 'weather-link') {
+                    fetchWeather();
+                }
+            });
+        });
+
+        // 算法模板库数据
+        const algorithmTemplates = {
+            sort: [
+                {
+                    title: "快速排序",
+                    desc: "时间复杂度O(nlogn)的经典排序算法",
+                    code: `void quickSort(int arr[], int left, int right) {
+    if (left >= right) return;
+    int i = left, j = right, pivot = arr[left];
+    while (i < j) {
+        while (i < j && arr[j] >= pivot) j--;
+        if (i < j) arr[i++] = arr[j];
+        while (i < j && arr[i] <= pivot) i++;
+        if (i < j) arr[j--] = arr[i];
+    }
+    arr[i] = pivot;
+    quickSort(arr, left, i - 1);
+    quickSort(arr, i + 1, right);
+}`
+                },
+                {
+                    title: "归并排序",
+                    desc: "稳定排序算法，时间复杂度O(nlogn)",
+                    code: `void mergeSort(int arr[], int temp[], int left, int right) {
+    if (left >= right) return;
+    int mid = (left + right) / 2;
+    mergeSort(arr, temp, left, mid);
+    mergeSort(arr, temp, mid + 1, right);
+    
+    int i = left, j = mid + 1, k = left;
+    while (i <= mid && j <= right) {
+        if (arr[i] <= arr[j]) temp[k++] = arr[i++];
+        else temp[k++] = arr[j++];
+    }
+    while (i <= mid) temp[k++] = arr[i++];
+    while (j <= right) temp[k++] = arr[j++];
+    for (i = left; i <= right; i++) arr[i] = temp[i];
+}`
+                }
+            ],
+            search: [
+                {
+                    title: "二分查找",
+                    desc: "在有序数组中查找元素的O(logn)算法",
+                    code: `int binarySearch(int arr[], int n, int target) {
+    int left = 0, right = n - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] == target) return mid;
+        if (arr[mid] < target) left = mid + 1;
+        else right = mid - 1;
+    }
+    return -1;
+}`
+                },
+                {
+                    title: "DFS深度优先搜索",
+                    desc: "用于树或图的遍历",
+                    code: `void dfs(int node, vector<vector<int>>& graph, vector<bool>& visited) {
+    visited[node] = true;
+    for (int neighbor : graph[node]) {
+        if (!visited[neighbor]) {
+            dfs(neighbor, graph, visited);
+        }
+    }
+}`
+                }
+            ],
+            graph: [
+                {
+                    title: "Dijkstra算法",
+                    desc: "单源最短路径算法，适用于无负权边",
+                    code: `void dijkstra(int start, vector<vector<pair<int, int>>>& graph, vector<int>& dist) {
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    dist[start] = 0;
+    pq.push({0, start});
+    
+    while (!pq.empty()) {
+        auto [d, u] = pq.top(); pq.pop();
+        if (d > dist[u]) continue;
+        for (auto [v, w] : graph[u]) {
+            if (dist[v] > dist[u] + w) {
+                dist[v] = dist[u] + w;
+                pq.push({dist[v], v});
+            }
+        }
+    }
+}`
+                },
+                {
+                    title: "Kruskal算法",
+                    desc: "最小生成树算法，使用并查集",
+                    code: `struct Edge {
+    int u, v, w;
+    bool operator<(const Edge& other) const {
+        return w < other.w;
+    }
+};
+
+int find(vector<int>& parent, int x) {
+    if (parent[x] != x) parent[x] = find(parent, parent[x]);
+    return parent[x];
+}
+
+int kruskal(vector<Edge>& edges, int n) {
+    sort(edges.begin(), edges.end());
+    vector<int> parent(n);
+    for (int i = 0; i < n; i++) parent[i] = i;
+    
+    int total = 0, count = 0;
+    for (auto [u, v, w] : edges) {
+        int rootU = find(parent, u), rootV = find(parent, v);
+        if (rootU != rootV) {
+            parent[rootU] = rootV;
+            total += w;
+            if (++count == n - 1) break;
+        }
+    }
+    return total;
+}`
+                }
+            ],
+            dp: [
+                {
+                    title: "0-1背包问题",
+                    desc: "经典的动态规划问题",
+                    code: `int knapsack(vector<int>& weights, vector<int>& values, int capacity) {
+    int n = weights.size();
+    vector<vector<int>> dp(n + 1, vector<int>(capacity + 1, 0));
+    
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= capacity; j++) {
+            if (weights[i-1] > j) {
+                dp[i][j] = dp[i-1][j];
+            } else {
+                dp[i][j] = max(dp[i-1][j], dp[i-1][j-weights[i-1]] + values[i-1]);
+            }
+        }
+    }
+    return dp[n][capacity];
+}`
+                },
+                {
+                    title: "最长公共子序列",
+                    desc: "LCS问题，动态规划解法",
+                    code: `int longestCommonSubsequence(string text1, string text2) {
+    int m = text1.size(), n = text2.size();
+    vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
+    
+    for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <= n; j++) {
+            if (text1[i-1] == text2[j-1]) {
+                dp[i][j] = dp[i-1][j-1] + 1;
+            } else {
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+            }
+        }
+    }
+    return dp[m][n];
+}`
+                }
+            ],
+            math: [
+                {
+                    title: "快速幂",
+                    desc: "高效计算幂次的方法",
+                    code: `long long fastPow(long long base, long long exp, long long mod) {
+    long long result = 1;
+    while (exp > 0) {
+        if (exp % 2 == 1) {
+            result = (result * base) % mod;
+        }
+        base = (base * base) % mod;
+        exp /= 2;
+    }
+    return result;
+}`
+                },
+                {
+                    title: "欧几里得算法",
+                    desc: "计算最大公约数",
+                    code: `int gcd(int a, int b) {
+    while (b != 0) {
+        int temp = a % b;
+        a = b;
+        b = temp;
+    }
+    return a;
+}`
+                }
+            ]
+        };
+
+        // 竞赛日历数据
+        const programmingContests = [
+            {
+                title: "洛谷Rated团队公开赛",
+                date: "不定期",
+                platform: "luogu",
+                desc: "洛谷举办的编程比赛，适合各个水平的选手参加",
+                link: "https://www.luogu.com.cn/contest/"
+            },
+            {
+                title: "洛谷月赛",
+                date: "不定期",
+                platform: "luogu",
+                desc: "洛谷举办的编程比赛，适合各个水平的选手参加",
+                link: "https://www.luogu.com.cn/contest/"
+            },
+            {
+                title: "洛谷算法基础赛",
+                date: "不定期",
+                platform: "luogu",
+                desc: "洛谷举办的编程比赛，适合各个水平的选手参加",
+                link: "https://www.luogu.com.cn/contest/"
+            },
+            {
+                title: "洛谷入门赛",
+                date: "不定期",
+                platform: "luogu",
+                desc: "洛谷举办的编程比赛，适合初学选手参加",
+                link: "https://www.luogu.com.cn/contest/"
+            },
+            {
+                title: "洛谷基础赛",
+                date: "不定期",
+                platform: "luogu",
+                desc: "洛谷举办的编程比赛，适合各个水平的选手参加",
+                link: "https://www.luogu.com.cn/contest/"
+            },
+            {
+                title: "梦熊洛谷同步赛",
+                date: "不定期",
+                platform: "luogu",
+                desc: "洛谷上梦熊举办的编程比赛，适合各个水平的选手参加",
+                link: "https://www.luogu.com.cn/contest/"
+            },
+            {
+                title: "Codeforces Round",
+                date: "待查",
+                platform: "codeforces",
+                desc: "Codeforces常规比赛",
+                link: "https://codeforces.com/contests"
+            },
+            {
+                title: "AtCoder Beginner Contest",
+                date: "每周六晚8:00~9:40",
+                platform: "atcoder",
+                desc: "AtCoder面向初学者的比赛，适合算法入门选手",
+                link: "https://atcoder.jp/contests/"
+            },
+            {
+                title: "LeetCode Weekly Contest",
+                date: "待查",
+                platform: "leetcode",
+                desc: "LeetCode每周算法竞赛，包含4道题目",
+                link: "https://leetcode.com/contest/"
+            },
+        ];
+
+        // 学习路线数据
+        const learningRoadmap = [
+            {
+                title: "编程基础",
+                level: "beginner",
+                desc: "学习基本的编程概念和语法，掌握变量、循环、条件语句等",
+                resources: "推荐资源: 《啊哈C语言》, Codecademy Python课程"
+            },
+            {
+                title: "数据结构入门",
+                level: "beginner",
+                desc: "学习数组、链表、栈、队列等基本数据结构",
+                resources: "推荐资源: 《算法图解》, LeetCode探索卡片"
+            },
+            {
+                title: "算法基础",
+                level: "intermediate",
+                desc: "掌握排序、搜索、递归等基本算法",
+                resources: "推荐资源: 《算法第四版》, 洛谷官方题单"
+            },
+            {
+                title: "动态规划入门",
+                level: "intermediate",
+                desc: "理解动态规划的基本思想，学习经典DP问题",
+                resources: "推荐资源: 《算法导论》动态规划章节, LeetCode DP专题"
+            },
+            {
+                title: "图论基础",
+                level: "intermediate",
+                desc: "学习图的表示方法、遍历算法和最短路径问题",
+                resources: "推荐资源: 《挑战程序设计竞赛》图论章节, Codeforces EDU"
+            },
+            {
+                title: "高级数据结构",
+                level: "advanced",
+                desc: "学习树状数组、线段树、平衡树等高级数据结构",
+                resources: "推荐资源: 《算法竞赛进阶指南》, OI Wiki"
+            },
+            {
+                title: "复杂算法设计",
+                level: "advanced",
+                desc: "学习网络流、计算几何、字符串匹配等高级算法",
+                resources: "推荐资源: 《算法艺术与信息学竞赛》, TopCoder教程"
+            }
+        ];
+
+        // 每日一题数据
+        const dailyProblems = [
+            {
+                title: "P1119 灾后重建",
+                difficulty: "easy",
+                desc: "灾后重建计划，需要根据道路修复情况计算最短路径。",
+                link: "https://www.luogu.com.cn/problem/P1119",
+                tags: ["最短路"]
+            },
+            {
+                title: "P1340 贪吃的九头龙",
+                difficulty: "easy",
+                desc: "计算九头龙从起点到终点的最短路径。",
+                link: "https://www.luogu.com.cn/problem/P1340",
+                tags: ["最短路"]
+            },
+            {
+                title: "P1363 幻想迷宫",
+                difficulty: "easy",
+                desc: "在幻想迷宫中找到从起点到终点的最短路径。",
+                link: "https://www.luogu.com.cn/problem/P1363",
+                tags: ["最短路"]
+            },
+            {
+                title: "P1462 通往奥格瑞玛的道路",
+                difficulty: "easy",
+                desc: "计算从起点到奥格瑞玛的最短路径。",
+                link: "https://www.luogu.com.cn/problem/P1462",
+                tags: ["最短路"]
+            },
+            {
+                title: "P1514 引水入城",
+                difficulty: "easy",
+                desc: "通过修建管道引水入城，计算最小花费。",
+                link: "https://www.luogu.com.cn/problem/P1514",
+                tags: ["最短路"]
+            },
+            {
+                title: "P1594 护卫队",
+                difficulty: "easy",
+                desc: "计算护卫队从起点到终点的最短时间。",
+                link: "https://www.luogu.com.cn/problem/P1594",
+                tags: ["最短路"]
+            },
+            {
+                title: "P1608 路径统计",
+                difficulty: "easy",
+                desc: "统计从起点到终点的最短路径条数。",
+                link: "https://www.luogu.com.cn/problem/P1608",
+                tags: ["最短路"]
+            },
+            {
+                title: "P1829 [国家集训队]Crash的数字表格",
+                difficulty: "medium",
+                desc: "通过计算数字表格中的最短路径解决问题。",
+                link: "https://www.luogu.com.cn/problem/P1829",
+                tags: ["最短路"]
+            },
+            {
+                title: "P1941 飞扬的小鸟",
+                difficulty: "medium",
+                desc: "计算小鸟从起点到终点的最短路径。",
+                link: "https://www.luogu.com.cn/problem/P1941",
+                tags: ["最短路"]
+            },
+            {
+                title: "P2048 超级玛丽",
+                difficulty: "medium",
+                desc: "计算玛丽从起点到终点的最短路径。",
+                link: "https://www.luogu.com.cn/problem/P2048",
+                tags: ["最短路"]
+            },
+            {
+                title: "P2132 圈地计划",
+                difficulty: "medium",
+                desc: "通过最短路径算法解决圈地计划问题。",
+                link: "https://www.luogu.com.cn/problem/P2132",
+                tags: ["最短路"]
+            },
+            {
+                title: "P2243 考勤记录",
+                difficulty: "medium",
+                desc: "通过最短路径算法分析考勤记录。",
+                link: "https://www.luogu.com.cn/problem/P2243",
+                tags: ["最短路"]
+            },
+            {
+                title: "P2486 [SDOI2011]染色",
+                difficulty: "medium",
+                desc: "通过最短路径算法解决染色问题。",
+                link: "https://www.luogu.com.cn/problem/P2486",
+                tags: ["最短路"]
+            },
+            {
+                title: "P2613 【模板】有理数取余",
+                difficulty: "medium",
+                desc: "通过最短路径算法计算有理数取余。",
+                link: "https://www.luogu.com.cn/problem/P2613",
+                tags: ["最短路"]
+            },
+            {
+                title: "P2661 信息传递",
+                difficulty: "medium",
+                desc: "通过最短路径算法分析信息传递路径。",
+                link: "https://www.luogu.com.cn/problem/P2661",
+                tags: ["最短路"]
+            },
+            {
+                title: "P2746 [USACO5.3]校园网Network of Schools",
+                difficulty: "medium",
+                desc: "通过最短路径算法解决校园网连接问题。",
+                link: "https://www.luogu.com.cn/problem/P2746"
+            },
+            {
+                title: "P2865 [USACO06FEB]奶牛零食Treats for the Cows",
+                difficulty: "medium",
+                desc: "通过最短路径算法分配奶牛零食。",
+                link: "https://www.luogu.com.cn/problem/P2865",
+                tags: ["最短路"]
+            },
+            {
+                title: "P3195 [HNOI2008]玩具装箱TOY",
+                difficulty: "hard",
+                desc: "通过最短路径算法解决玩具装箱问题。",
+                link: "https://www.luogu.com.cn/problem/P3195",
+                tags: ["最短路"]
+            },
+            {
+                title: "P3201 [HNOI2009]梦幻布丁",
+                difficulty: "hard",
+                desc: "通过最短路径算法解决梦幻布丁问题。",
+                link: "https://www.luogu.com.cn/problem/P3201",
+                tags: ["最短路"]
+            },
+            {
+                title: "P3245 [HNOI2016]大数",
+                difficulty: "hard",
+                desc: "通过最短路径算法处理大数问题。",
+                link: "https://www.luogu.com.cn/problem/P3245",
+                tags: ["最短路"]
+            },
+            {
+                title: "P3376 【模板】网络最大流",
+                difficulty: "hard",
+                desc: "通过最短路径算法求解网络最大流问题。",
+                link: "https://www.luogu.com.cn/problem/P3376",
+                tags: ["最短路"]
+            },
+            {
+                title: "P3385 【模板】负权最短路（Bellman-Ford）",
+                difficulty: "hard",
+                desc: "使用Bellman-Ford算法解决负权最短路问题。",
+                link: "https://www.luogu.com.cn/problem/P3385",
+                tags: ["最短路"]
+            },
+            {
+                title: "P3469 [POI2008]BLO-Blockade",
+                difficulty: "hard",
+                desc: "通过最短路径算法解决封锁问题。",
+                link: "https://www.luogu.com.cn/problem/P3469",
+                tags: ["最短路"]
+            },
+            {
+                title: "P3613 睡觉困难综合征",
+                difficulty: "hard",
+                desc: "通过最短路径算法解决睡觉困难问题。",
+                link: "https://www.luogu.com.cn/problem/P3613",
+                tags: ["最短路"]
+            },
+            {
+                title: "P3664 [USACO17FEB]Why Did the Cow Cross the Road II S",
+                difficulty: "hard",
+                desc: "通过最短路径算法分析奶牛过马路问题。",
+                link: "https://www.luogu.com.cn/problem/P3664",
+                tags: ["最短路"]
+            },
+            {
+                title: "P3690 【模板】差分约束算法",
+                difficulty: "hard",
+                desc: "通过最短路径算法实现差分约束。",
+                link: "https://www.luogu.com.cn/problem/P3690",
+                tags: ["最短路"]
+            },
+            {
+                title: "P3730 [HAOI2017]旅游",
+                difficulty: "hard",
+                desc: "通过最短路径算法规划旅游路线。",
+                link: "https://www.luogu.com.cn/problem/P3730",
+                tags: ["最短路"]
+            },
+            {
+                title: "P3953 [NOIP2017提高组]逛公园",
+                difficulty: "hard",
+                desc: "通过最短路径算法解决逛公园问题。",
+                link: "https://www.luogu.com.cn/problem/P3953",
+                tags: ["最短路"]
+            },
+            {
+                title: "P4011 孤岛营救问题",
+                difficulty: "hard",
+                desc: "通过最短路径算法解决孤岛营救问题。",
+                link: "https://www.luogu.com.cn/problem/P4011",
+                tags: ["最短路"]
+            },
+            {
+                title: "P4103 [HEOI2014]大工程",
+                difficulty: "hard",
+                desc: "通过最短路径算法处理大工程项目。",
+                link: "https://www.luogu.com.cn/problem/P4103",
+                tags: ["最短路"]
+            },
+            {
+                title: "P4147 玉蟾宫",
+                difficulty: "hard",
+                desc: "通过最短路径算法解决玉蟾宫问题。",
+                link: "https://www.luogu.com.cn/problem/P4147",
+                tags: ["最短路"]
+            },
+            {
+                title: "P4211 [LNOI2014]LCA",
+                difficulty: "hard",
+                desc: "通过最短路径算法计算LCA。",
+                link: "https://www.luogu.com.cn/problem/P4211",
+                tags: ["最短路"]
+            },
+            {
+                title: "P4302 [JSOI2010]连通数",
+                difficulty: "hard",
+                desc: "通过最短路径算法计算连通数。",
+                link: "https://www.luogu.com.cn/problem/P4302",
+                tags: ["最短路"]
+            },
+            {
+                title: "P4309 [TJOI2013]最长上升子序列",
+                difficulty: "hard",
+                desc: "通过最短路径算法解决最长上升子序列问题。",
+                link: "https://www.luogu.com.cn/problem/P4309",
+                tags: ["最短路"]
+            },
+            {
+                title: "P4322 [JSOI2016]最佳团组",
+                difficulty: "hard",
+                desc: "通过最短路径算法解决最佳团组问题。",
+                link: "https://www.luogu.com.cn/problem/P4322",
+                tags: ["最短路"]
+            },
+            {
+                title: "P4462 [CQOI2018]异或序列",
+                difficulty: "hard",
+                desc: "通过最短路径算法解决异或序列问题。",
+                link: "https://www.luogu.com.cn/problem/P4462",
+                tags: ["最短路"]
+            },
+            {
+                title: "P4568 [JLOI2011]飞行路线",
+                difficulty: "hard",
+                desc: "通过最短路径算法规划飞行路线。",
+                link: "https://www.luogu.com.cn/problem/P4568",
+                tags: ["最短路"]
+            },
+            {
+                title: "P4783 【模板】最大流 Dinic",
+                difficulty: "hard",
+                desc: "通过最短路径算法实现最大流Dinic算法。",
+                link: "https://www.luogu.com.cn/problem/P4783",
+                tags: ["最短路"]
+            },
+            {
+                title: "P4878 [USACO05DEC]Layout G",
+                difficulty: "hard",
+                desc: "通过最短路径算法解决布局问题。",
+                link: "https://www.luogu.com.cn/problem/P4878",
+                tags: ["最短路"]
+            },
+            {
+                title: "P4926 004]生日快乐",
+                difficulty: "hard",
+                desc: "通过最短路径算法计算生日快乐的路径。",
+                link: "https://www.luogu.com.cn/problem/P4926",
+                tags: ["最短路"]
+            },
+            {
+                title: "P5017 [NOIP2018 提高组]摆渡车",
+                difficulty: "hard",
+                desc: "通过最短路径算法解决摆渡车问题。",
+                link: "https://www.luogu.com.cn/problem/P5017",
+                tags: ["最短路"]
+            },
+            {
+                title: "P5021 [NOIP2018 普及组]货车运输",
+                difficulty: "hard",
+                desc: "通过最短路径算法规划货车运输路径。",
+                link: "https://www.luogu.com.cn/problem/P5021",
+                tags: ["最短路"]
+            },
+            {
+                title: "P5162 WD与积木",
+                difficulty: "hard",
+                desc: "通过最短路径算法解决积木问题。",
+                link: "https://www.luogu.com.cn/problem/P5162",
+                tags: ["最短路"]
+            },
+            {
+                title: "P5290 [十二省联考2019]春节十二响",
+                difficulty: "hard",
+                desc: "通过最短路径算法解决春节十二响问题。",
+                link: "https://www.luogu.com.cn/problem/P5290",
+                tags: ["最短路"]
+            },
+            {
+                title: "P5321 [BJOI2019]管线",
+                difficulty: "hard",
+                desc: "通过最短路径算法规划管线。",
+                link: "https://www.luogu.com.cn/problem/P5321",
+                tags: ["最短路"]
+            },
+            {
+                title: "P5360 [SDOI2019]世界地图",
+                difficulty: "hard",
+                desc: "通过最短路径算法处理世界地图问题。",
+                link: "https://www.luogu.com.cn/problem/P5360",
+                tags: ["最短路"]
+            },
+            {
+                title: "P5661 [ES6HKE]旅行计划",
+                difficulty: "hard",
+                desc: "通过最短路径算法规划旅行计划。",
+                link: "https://www.luogu.com.cn/problem/P5661",
+                tags: ["最短路"]
+            },
+            {
+                title: "P5703 【深基7.例2】苹果采购",
+                difficulty: "hard",
+                desc: "通过最短路径算法解决苹果采购问题。",
+                link: "https://www.luogu.com.cn/problem/P5703",
+                tags: ["最短路"]
+            },
+            {
+                title: "P5787 二分图最大权匹配",
+                difficulty: "hard",
+                desc: "通过最短路径算法解决二分图最大权匹配问题。",
+                link: "https://www.luogu.com.cn/problem/P5787",
+                tags: ["最短路"]
+            },
+            {
+                title: "P5829 [HNOI2012]矿场搭建",
+                difficulty: "hard",
+                desc: "通过最短路径算法解决矿场搭建问题。",
+                link: "https://www.luogu.com.cn/problem/P5829",
+                tags: ["最短路"]
+            },
+            {
+                title: "P6050 [RC-06]简单题",
+                difficulty: "hard",
+                desc: "通过最短路径算法解决简单题。",
+                link: "https://www.luogu.com.cn/problem/P6050",
+                tags: ["最短路"]
+            }
+        ];
+
+        // 名人名言数据
+        const inspirationalQuotes = [
+            {
+                text: "成功的秘诀在于始终坚持自己的目标。",
+                author: "本杰明·迪斯雷利"
+            },
+            {
+                text: "我们的最大弱点在于放弃。成功的必然之路就是不断的重来一次。",
+                author: "托马斯·爱迪生"
+            },
+            {
+                text: "不要等待，时机永远不会恰到好处。",
+                author: "拿破仑·希尔"
+            },
+            {
+                text: "成功的秘诀就是每天都比别人多努力一点。",
+                author: "张瑞敏"
+            },
+            {
+                text: "编程不是关于你知道什么，而是关于你能想出什么。",
+                author: "克里斯·派恩"
+            },
+            {
+                text: "代码写得好就像是在写诗，每个字母都很重要。",
+                author: "匿名程序员"
+            },
+            {
+                text: "学习编程的最好方法就是编写大量的代码。",
+                author: "林纳斯·托瓦兹"
+            },
+            {
+                text: "计算机科学的核心是解决问题，而不是编写代码。",
+                author: "理查德·汉明"
+            },
+            {
+                text: "大多数优秀的程序员从事编程工作，不是因为期望获得报酬或得到公众的称赞，而是因为编程是件有趣的事儿。",
+                author: "林纳斯·托瓦兹"
+            },
+            {
+                text: "一名优秀的程序员，在穿越单行道时也会确认双向的来车情况。",
+                author: "道格拉斯·林德"
+            },
+            {
+                text: "这是我能想到的，唯一可以让我既当工程师又做艺术家的工作。",
+                author: "安迪·赫兹菲尔德"
+            },
+            {
+                text: "函数应该做一件事。做好这件事。只能做这一件事。",
+                author: "罗伯特·C.马丁"
+            },
+            {
+                text: "愚者困惑，智者提问。",
+                author: "本杰明·迪斯雷利"
+            },
+            {
+                text: "理论上，理论和实践没有区别。但实践上，是有区别的。",
+                author: "简·范德斯奈普特"
+            },
+            {
+                text: "百分之八十的成功只是出席。",
+                author: "伍迪·艾伦"
+            },
+            {
+                text: "我坚信，自我教育是唯一的教育形式。",
+                author: "艾萨克·阿西莫夫"
+            },
+            {
+                text: "我所学到的一切，都是从书本上得来的。",
+                author: "亚伯拉罕·林肯"
+            },
+            {
+                text: "练习成就不了完美。多练习会产生髓磷脂，是髓磷脂让你做到完美。",
+                author: "丹尼尔·科伊尔"
+            },
+            {
+                text: "只有两种编程语言：大家抱怨的和没人用的。",
+                author: "本贾尼·斯特劳斯特鲁普"
+            },
+            {
+                text: "优良设计创造价值的速度，快于其增加成本的速度。",
+                author: "托马斯·C.盖勒"
+            },
+            {
+                text: "视代码如诗词，勿要做无所谓的堆砌。",
+                author: "伊利亚·多尔曼"
+            },
+            {
+                text: "代码跑起来我们再聊。",
+                author: "沃德·坎宁安"
+            },
+            {
+                text: "除了计算机编程外，我想不出还有其他让我感兴趣的工作。",
+                author: "皮特·范德林登"
+            },
+            {
+                text: "代码胜于雄辩。",
+                author: "林纳斯·托瓦兹"
+            },
+            {
+                text: "每名程序员都是作家。",
+                author: "塞坎·雷勒克"
+            },
+            {
+                text: "我拒绝做计算机能够胜任的事情。",
+                author: "奥林·施福尔"
+            },
+            {
+                text: "神话和传说的魔力在我们这一代成真。只要在键盘上敲下正确的咒语，显示屏就像是活了过来，里面都是以前不可能存在或发生的事情。",
+                author: "费德里克·布鲁克斯"
+            },
+            {
+                text: "我从心底认为，优秀的程序员与平庸的程序员之间的区别，是在于认为自己的代码重要还是数据结构更加重要。平庸的程序员眼里只有代码，优秀的程序员则关注数据结构及之前的关系。",
+                author: "林纳斯·托瓦兹"
+            },
+            {
+                text: "算法，就像一张菜谱。",
+                author: "瓦辛·拉提夫"
+            },
+            {
+                text: "写代码时，每次都要告诉自己：最后负责维护代码的，会是一个知道你住在哪的变态暴力狂。",
+                author: "约翰·伍德"
+            },
+            {
+                text: "请注意，在‘现实世界’里，演讲者的诉求永远是听众不要挑战其默认的假设条件。",
+                author: "艾兹格·W·迪科斯彻"
+            },
+            {
+                text: "没有优秀的团队，无法打造出优秀的软件。大部分的软件团队看上去就像内部不和谐的家庭。",
+                author: "吉姆·麦卡锡"
+            },
+            {
+                text: "最优秀的程序员比一般优秀的程序员，不只是好一丁半点。不论用什么标准来衡量，他们都比后者优秀太多：认知创新能力、工作效率、设计原创性或问题解决能力都是如此。",
+                author: "兰道尔·斯特若斯"
+            },
+            {
+                text: "拙劣的程序员担心代码。好的程序员担心数据结构及它们的关系。",
+                author: "林纳斯•托瓦兹"
+            },
+            {
+                text: "计算机是没有用的，它们只能给出答案。",
+                author: "巴勃罗•毕加索"
+            },
+            {
+                text: "数据！数据！数据！没有黏土我无法造出砖来！",
+                author: "夏洛克•福尔摩斯"
+            },
+            {
+                text: "软件工程的目的是控制复杂度，而不是制造复杂度。",
+                author: "帕梅拉•扎维"
+            },
+            {
+                text: "时间是阻止所有事情同时发生的力量。",
+                author: "雷•卡明斯"
+            },
+            {
+                text: "在未掌握数据之前就做出推测，是最大的错误。",
+                author: "夏洛克•福尔摩斯"
+            },
+            {
+                text: "不要降低预期去屈就性能，而要提升性能满足预期。",
+                author: "拉尔夫•马斯顿"
+            },
+            {
+                text: "数学家是现代化世界的‘主人’。",
+                author: "比尔•盖茨"
+            },
+            {
+                text: "可预测性不是事物的走向，而是它们的可能趋势。",
+                author: "拉海尔•法鲁克"
+            }
+        ];
+
+        // 渲染算法卡片
+        function renderAlgorithmCards(category) {
+            const container = document.getElementById('algorithm-cards');
+            container.innerHTML = '';
+
+            algorithmTemplates[category].forEach(algorithm => {
+                const card = document.createElement('div');
+                card.className = 'algorithm-card';
+                card.innerHTML = `
+                    <div class="algorithm-title">${algorithm.title}</div>
+                    <div class="algorithm-desc">${algorithm.desc}</div>
+                    <pre class="algorithm-code">${algorithm.code}</pre>
+                    <button class="copy-btn" data-code="${encodeURIComponent(algorithm.code)}">复制代码</button>
+                `;
+                container.appendChild(card);
+            });
+
+            // 添加复制功能
+            document.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const code = decodeURIComponent(this.getAttribute('data-code'));
+                    navigator.clipboard.writeText(code).then(() => {
+                        const originalText = this.textContent;
+                        this.textContent = '已复制!';
+                        setTimeout(() => {
+                            this.textContent = originalText;
+                        }, 2000);
+                    });
+                });
+            });
+        }
+
+        // 游戏按钮点击处理函数
+        function handleGameButtonClick() {
+            const game = this.getAttribute('data-game');
+            const gameUrls = {
+                'parkour': 'https://zhangyimin12345.github.io/snake-test-game-easyparkour',
+                'tetris': 'https://zhangyimin12345.github.io/snake-test-game-tetris',
+                'minesweeper': 'https://zhangyimin12345.github.io/snake-test-game-minesweeper',
+                'snake': 'https://zhangyimin12345.github.io/snake-test-game-snakes'
+            };
+            window.open(gameUrls[game], '_blank');
+        }
+
+        // 在DOM加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function () {
+            // 初始化游戏按钮
+            document.querySelectorAll('.game-btn').forEach(btn => {
+                btn.addEventListener('click', handleGameButtonClick);
+            });
+
+            // 其他初始化代码...
+            updateTime();
+            showRandomQuote();
+            // ...其他初始化
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // 页面加载完成后显示模态框
+            document.getElementById('welcomeModal').style.display = 'flex';
+
+            // 设置5秒后自动关闭模态框
+            setTimeout(function() {
+                document.getElementById('welcomeModal').style.display = 'none';
+            }, 10000); // 5000毫秒即5秒
+
+            // 添加关闭按钮点击事件
+            document.querySelector('.close-btn').addEventListener('click', function() {
+                document.getElementById('welcomeModal').style.display = 'none';
+            });
+
+            // 点击模态框外部区域关闭模态框
+            document.getElementById('welcomeModal').addEventListener('click', function(event) {
+                if (event.target == this) {
+                    this.style.display = 'none';
+                }
+            });
+
+            // 阻止点击关闭按钮时事件冒泡到模态框
+            document.querySelector('.close-btn').addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+
+            // ... 其余初始化代码保持不变 ...
+        });
+
+
+        // 在页面加载完成后绑定事件
+        function initGameButtons() {
+            document.querySelectorAll('.game-btn').forEach(btn => {
+                btn.addEventListener('click', handleGameButtonClick);
+            });
+        }
+
+        // 渲染竞赛日历
+        function renderCalendarEvents(platform) {
+            const container = document.getElementById('calendar-events');
+            container.innerHTML = '';
+
+            programmingContests
+                .filter(event => platform === 'all' || event.platform === platform)
+                .forEach(event => {
+                    const card = document.createElement('div');
+                    card.className = 'event-card';
+                    card.innerHTML = `
+                        <div class="event-title">${event.title}</div>
+                        <div class="event-date">${event.date}</div>
+                        <span class="event-platform platform-${event.platform}">${getPlatformName(event.platform)}</span>
+                        <div class="event-desc">${event.desc}</div>
+                        <a href="${event.link}" target="_blank" class="view-btn">查看详情</a>
+                    `;
+                    container.appendChild(card);
+                });
+        }
+
+        function getPlatformName(platform) {
+            const names = {
+                'luogu': '洛谷',
+                'codeforces': 'Codeforces',
+                'atcoder': 'AtCoder',
+                'leetcode': 'LeetCode'
+            };
+            return names[platform] || platform;
+        }
+
+        // 渲染学习路线
+        function renderRoadmapSteps() {
+            const container = document.getElementById('roadmap-steps');
+            container.innerHTML = '';
+
+            learningRoadmap.forEach(step => {
+                const card = document.createElement('div');
+                card.className = 'step-card';
+                card.innerHTML = `
+                    <div class="step-title">${step.title}</div>
+                    <div class="step-level step-${step.level}">${getLevelName(step.level)}</div>
+                    <div class="step-desc">${step.desc}</div>
+                    <div class="step-resources">${step.resources}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function getLevelName(level) {
+            const names = {
+                'beginner': '初级',
+                'intermediate': '中级',
+                'advanced': '高级'
+            };
+            return names[level] || level;
+        }
+
+        // 渲染每日一题
+        function renderDailyProblems() {
+            const container = document.getElementById('daily-problems');
+            container.innerHTML = '';
+
+            // 随机选择3道不同难度的题目
+            const easyProblems = dailyProblems.filter(p => p.difficulty === 'easy');
+            const mediumProblems = dailyProblems.filter(p => p.difficulty === 'medium');
+            const hardProblems = dailyProblems.filter(p => p.difficulty === 'hard');
+
+            const selectedProblems = [
+                easyProblems[Math.floor(Math.random() * easyProblems.length)],
+                mediumProblems[Math.floor(Math.random() * mediumProblems.length)],
+                hardProblems[Math.floor(Math.random() * hardProblems.length)]
+            ];
+
+            selectedProblems.forEach(problem => {
+                const card = document.createElement('div');
+                card.className = 'problem-card';
+                card.innerHTML = `
+                    <div class="problem-title">${problem.title}</div>
+                    <span class="problem-difficulty difficulty-${problem.difficulty}">${getDifficultyName(problem.difficulty)}</span>
+                    ${problem.tags.map(tag => `<span class="event-platform">${tag}</span>`).join('')}
+                    <div class="problem-desc">${problem.desc}</div>
+                    <a href="${problem.link}" target="_blank" class="view-btn">查看题目</a>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function getDifficultyName(difficulty) {
+            const names = {
+                'easy': '简单',
+                'medium': '中等',
+                'hard': '困难'
+            };
+            return names[difficulty] || difficulty;
+        }
+
+        // 更新时间显示
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            document.getElementById('time-display').textContent = timeStr;
+        }
+
+        // 显示随机名言
+        function showRandomQuote() {
+            const quote = inspirationalQuotes[Math.floor(Math.random() * inspirationalQuotes.length)];
+            document.getElementById('quote-text').textContent = quote.text;
+            document.getElementById('quote-author').textContent = `—— ${quote.author}`;
+        }
+
+        // 分类按钮点击事件
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const category = this.getAttribute('data-category');
+                renderAlgorithmCards(category);
+            });
+        });
+
+        // 平台筛选按钮点击事件
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const platform = this.getAttribute('data-platform');
+                renderCalendarEvents(platform);
+            });
+        });
+
+        // 其他按钮功能
+
+        document.getElementById('article-link').addEventListener('click', function () {
+            window.open('https://zhangyimin12345.github.io/snake-test-114514/', '_blank');
+        });
+
+        document.getElementById('luogu-team-btn').addEventListener('click', function () {
+            window.open('https://www.luogu.com.cn/team/98666', '_blank');
+        });
+
+        document.getElementById('notes-link').addEventListener('click', function () {
+            window.open('https://zhangyimin12345.github.io/snake-test-2-markdown/', '_blank');
+        });
+
+        // 初始化
+        updateTime();
+        setInterval(updateTime, 1000);
+        showRandomQuote();
+        setInterval(showRandomQuote, 60000); // 每分钟更换一次名言
+    </script>
+</body>
+
+</html>
