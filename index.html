@@ -160,13 +160,20 @@
             transform: scale(1.1);
         }
 
-        /* 算法模板库样式 */
+        /* 确保所有内容区域默认隐藏 */
         .algorithm-section,
         .calendar-section,
         .roadmap-section,
         .daily-section,
-        .weather-section {
+        .game-section,
+        .weather-section,
+        .article-section {
             display: none;
+        }
+
+        /* 激活的部分显示 */
+        .active-section {
+            display: block;
         }
 
         .algorithm-categories,
@@ -555,8 +562,224 @@
             background-color: var(--sidebar-bg);
             color: var(--text-color);
         }
+
+        /* 文章编辑器样式 */
+        .article-editor {
+            display: none;
+            margin: 20px;
+            max-width: 800px;
+        }
+
+        .article-editor.active-section {
+            display: block;
+        }
+
+        .article-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .article-form input,
+        .article-form textarea,
+        .article-form select {
+            padding: 8px;
+            border: 1px solid var(--card-border);
+            border-radius: 4px;
+            background-color: var(--sidebar-bg);
+            color: var(--text-color);
+        }
+
+        .article-form textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+
+        .article-form button {
+            align-self: flex-start;
+        }
+
+        /* 文章列表样式 */
+        .article-list {
+            display: none;
+            margin: 20px;
+            max-width: 800px;
+        }
+
+        .article-list.active-section {
+            display: block;
+        }
+
+        .article-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: transform 0.2s;
+        }
+
+        .article-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .article-card h3 {
+            margin-top: 0;
+            color: var(--button-bg);
+        }
+
+        .article-meta {
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+
+        .article-content {
+            margin-bottom: 10px;
+        }
+
+        .article-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* 文章分类标签 */
+        .article-category {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-right: 5px;
+            background-color: var(--button-bg);
+            color: white;
+        }
+
+        /* Markdown预览样式 */
+        .article-preview {
+            border: 1px solid var(--card-border);
+            border-radius: 4px;
+            padding: 15px;
+            min-height: 200px;
+            background-color: var(--sidebar-bg);
+            margin-bottom: 15px;
+        }
+
+        .article-preview h1,
+        .article-preview h2,
+        .article-preview h3,
+        .article-preview h4,
+        .article-preview h5,
+        .article-preview h6 {
+            color: var(--button-bg);
+            margin-top: 1em;
+            margin-bottom: 0.5em;
+        }
+
+        .article-preview p {
+            margin-bottom: 1em;
+            line-height: 1.6;
+        }
+
+        .article-preview pre {
+            background-color: var(--sidebar-hover);
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+
+        .article-preview code {
+            font-family: monospace;
+            background-color: var(--sidebar-hover);
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .article-preview blockquote {
+            border-left: 3px solid var(--button-bg);
+            padding-left: 15px;
+            margin-left: 0;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .article-preview table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 1em;
+        }
+
+        .article-preview th,
+        .article-preview td {
+            border: 1px solid var(--card-border);
+            padding: 8px;
+        }
+
+        .article-preview img {
+            max-width: 100%;
+        }
+
+        /* Markdown编辑器样式 */
+        .EasyMDEContainer {
+            margin-bottom: 15px;
+        }
+
+        .EasyMDEContainer .CodeMirror {
+            background-color: var(--sidebar-bg);
+            color: var(--text-color);
+            border: 1px solid var(--card-border);
+            border-radius: 4px;
+        }
+
+        .EasyMDEContainer .CodeMirror-focused {
+            border-color: var(--button-bg);
+        }
+
+        .EasyMDEContainer .editor-toolbar {
+            background-color: var(--sidebar-bg);
+            border: 1px solid var(--card-border);
+            border-bottom: none;
+            opacity: 1;
+        }
+
+        .EasyMDEContainer .editor-toolbar button {
+            color: var(--text-color);
+        }
+
+        .EasyMDEContainer .editor-toolbar button:hover,
+        .EasyMDEContainer .editor-toolbar button.active {
+            background-color: var(--sidebar-hover);
+            border-color: var(--card-border);
+        }
+
+        /* 文章查看模态框样式 */
+        .article-modal {
+            display: none;
+            position: fixed;
+            z-index: 1002;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .article-modal-content {
+            background-color: var(--card-bg);
+            margin: 2% auto;
+            padding: 20px;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            width: 80%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- 引入必要的CSS库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/github.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.css">
 </head>
 
 <body>
@@ -644,7 +867,66 @@
             </div>
             <div class="sidebar-item" id="article-link">
                 <div class="sidebar-icon"><i class="fas fa-file-alt"></i></div>
-                <div class="sidebar-label">文章（暂未制作）</div>
+                <div class="sidebar-label">文章（剪贴板）</div>
+            </div>
+        </div>
+
+        <!-- 文章查看模态框 -->
+        <div id="article-modal" class="article-modal">
+            <div class="article-modal-content">
+                <span class="close-btn">&times;</span>
+                <h1 id="modal-article-title"></h1>
+                <div class="article-meta">
+                    <span class="article-category" id="modal-article-category"></span>
+                    <span id="modal-article-date"></span>
+                </div>
+                <div id="modal-article-content" class="article-preview"></div>
+            </div>
+        </div>
+
+        <div id="article-section" class="article-section">
+            <h1>文章</h1>
+            <div class="article-controls">
+                <button id="new-article-btn" class="luogu-btn">新建文章</button>
+                <button id="view-articles-btn" class="luogu-btn">查看文章</button>
+            </div>
+
+            <!-- 文章编辑器 -->
+            <div id="article-editor" class="article-editor">
+                <h3>发布新文章</h3>
+                <form id="article-form" class="article-form">
+                    <div class="form-group">
+                        <label for="article-title">标题:</label>
+                        <input type="text" id="article-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="article-category">分类:</label>
+                        <select id="article-category" required>
+                            <option value="教程">教程</option>
+                            <option value="算法">算法</option>
+                            <option value="题解">题解</option>
+                            <option value="公告">公告</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="article-content">内容 (支持Markdown):</label>
+                        <textarea id="article-content" required></textarea>
+                        <h4>如果要Katex预览，请使用<a href="https://zhangyimin12345.github.io/snake-test-2-markdown/"
+                                target="_blank">随手记</a>。</h4>
+                    </div>
+                    <button type="submit" class="luogu-btn">发布文章</button>
+                    <button type="button" id="cancel-edit" class="luogu-btn">取消</button>
+                </form>
+            </div>
+
+            <!-- 文章列表 -->
+            <div id="article-list" class="article-list">
+                <h3>文章列表</h3>
+                <div id="articles-container">
+                    <!-- 文章将通过JavaScript动态加载 -->
+                </div>
+                <button id="back-to-editor" class="luogu-btn">返回编辑器</button>
             </div>
         </div>
 
@@ -655,12 +937,12 @@
                     <span class="closewelcome-btn">&times;</span>
                     <div class="welcome-box">
                         <h1>Welcome!</h1>
-                        <h3>欢迎来到Snake-test 2.0！本网站由zhangyimin12345制作，供snake集团成员使用。</h3>
+                        <h3>欢迎来到Snake-test 2.2！本网站由zhangyimin12345制作，供snake集团成员使用。</h3>
                         <h3>用于本人是个HTML辣鸡，有什么建议欢迎提出！</h3>
                         <h3>本网站的主要功能都在侧边栏里，你可以点击查看。推荐用暗色主题。</h3>
                         <h3>注：随手记即Markdown编辑器。</h3>
                         <h3>注：小游戏·跑酷炸了，还没修好。有些地方缺斤少两，慢慢修吧。</h3>
-                        <h3>注：有些东西处于试验阶段，未补充资源或未调用API。“文章”板块还未制作。</h3>
+                        <h3>注：有些东西处于试验阶段，未补充资源或未调用API。“文章”板块还未完全制作完成。</h3>
                     </div>
                 </div>
             </div>
@@ -747,7 +1029,11 @@
 
     <script src="https://api.vvhan.com/api/script/bolang"></script>
     <script src="https://api.vvhan.com/api/script/snow"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.2.12/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.js"></script>
     <script>
         // 主题切换功能
         const themeToggle = document.getElementById('theme-toggle');
@@ -780,13 +1066,13 @@
             'roadmap-link': 'roadmap-section',
             'daily-link': 'daily-section',
             'notes-link': 'home-section',
-            'article-link': 'home-section'
+            'article-link': 'article-section'
         };
 
         Object.keys(sections).forEach(id => {
             document.getElementById(id).addEventListener('click', function () {
-                // 隐藏所有部分
-                document.querySelectorAll('.algorithm-section, #home-section, .calendar-section, .roadmap-section, .daily-section, .game-section, .weather-section').forEach(section => {
+                // 隐藏所有部分 - 现在也包括article-section
+                document.querySelectorAll('.algorithm-section, #home-section, .calendar-section, .roadmap-section, .daily-section, .game-section, .weather-section, .article-section').forEach(section => {
                     section.classList.remove('active-section');
                 });
 
@@ -803,11 +1089,323 @@
                     renderRoadmapSteps();
                 } else if (id === 'daily-link') {
                     renderDailyProblems();
-                } else if (id === 'weather-link') {
-                    fetchWeather();
                 }
             });
         });
+
+        // 文章数据存储
+        const ARTICLES_KEY = 'snake_test_articles';
+
+        // 初始化文章数据
+        if (!localStorage.getItem(ARTICLES_KEY)) {
+            localStorage.setItem(ARTICLES_KEY, JSON.stringify([]));
+        }
+
+        // DOM元素
+        const articleSection = document.getElementById('article-section');
+        const newArticleBtn = document.getElementById('new-article-btn');
+        const viewArticlesBtn = document.getElementById('view-articles-btn');
+        const articleEditor = document.getElementById('article-editor');
+        const articleList = document.getElementById('article-list');
+        const articleForm = document.getElementById('article-form');
+        const backToEditorBtn = document.getElementById('back-to-editor');
+        const cancelEditBtn = document.getElementById('cancel-edit');
+
+        // 显示文章编辑器
+        function showArticleEditor() {
+            articleEditor.classList.add('active-section');
+            articleList.classList.remove('active-section');
+            articleForm.reset();
+        }
+
+        // 显示文章列表
+        function showArticleList() {
+            articleEditor.classList.remove('active-section');
+            articleList.classList.add('active-section');
+            renderArticles();
+        }
+
+        // 渲染文章列表
+        function renderArticles() {
+            const articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
+            const container = document.getElementById('articles-container');
+            container.innerHTML = '';
+
+            if (articles.length === 0) {
+                container.innerHTML = '<p>暂无文章</p>';
+                return;
+            }
+
+            articles.forEach((article, index) => {
+                const articleCard = document.createElement('div');
+                articleCard.className = 'article-card';
+                articleCard.innerHTML = `
+                    <h3>${article.title}</h3>
+                    <div class="article-meta">
+                        <span class="article-category">${article.category}</span>
+                        <span>发布于: ${new Date(article.timestamp).toLocaleString()}</span>
+                    </div>
+                    <div class="article-content">${article.content.substring(0, 100)}${article.content.length > 100 ? '...' : ''}</div>
+                    <div class="article-actions">
+                        <button class="luogu-btn view-article-btn" data-index="${index}">查看</button>
+                        <button class="luogu-btn edit-article-btn" data-index="${index}">编辑</button>
+                        <button class="luogu-btn delete-article-btn" data-index="${index}">删除</button>
+                    </div>
+                `;
+                container.appendChild(articleCard);
+            });
+
+            // 添加按钮事件
+            document.querySelectorAll('.view-article-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    viewArticle(parseInt(this.getAttribute('data-index')));
+                });
+            });
+
+            document.querySelectorAll('.edit-article-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    editArticle(parseInt(this.getAttribute('data-index')));
+                });
+            });
+
+            document.querySelectorAll('.delete-article-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    deleteArticle(parseInt(this.getAttribute('data-index')));
+                });
+            });
+        }
+
+        // 查看文章详情
+        function viewArticle(index) {
+            const articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
+            const article = articles[index];
+
+            // 这里可以弹出一个模态框显示完整文章内容
+            alert(`标题: ${article.title}\n分类: ${article.category}\n\n${article.content}`);
+        }
+
+        // 编辑文章
+        function editArticle(index) {
+            const articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
+            const article = articles[index];
+
+            document.getElementById('article-title').value = article.title;
+            document.getElementById('article-category').value = article.category;
+            document.getElementById('article-content').value = article.content;
+
+            // 标记当前正在编辑的文章索引
+            articleForm.dataset.editingIndex = index;
+
+            showArticleEditor();
+        }
+
+        // 删除文章
+        function deleteArticle(index) {
+            if (confirm('确定要删除这篇文章吗？')) {
+                const articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
+                articles.splice(index, 1);
+                localStorage.setItem(ARTICLES_KEY, JSON.stringify(articles));
+                renderArticles();
+            }
+        }
+
+        // 提交文章表单
+        articleForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const title = document.getElementById('article-title').value;
+            const category = document.getElementById('article-category').value;
+            const content = window.articleEditor.value();
+
+            const articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
+
+            if (this.dataset.editingIndex !== undefined) {
+                // 编辑现有文章
+                const index = parseInt(this.dataset.editingIndex);
+                articles[index] = {
+                    title,
+                    category,
+                    content,
+                    timestamp: articles[index].timestamp
+                };
+                delete this.dataset.editingIndex;
+            } else {
+                // 添加新文章
+                articles.push({
+                    title,
+                    category,
+                    content,
+                    timestamp: new Date().toISOString()
+                });
+            }
+
+            localStorage.setItem(ARTICLES_KEY, JSON.stringify(articles));
+            alert('文章已保存！');
+            showArticleList();
+        });
+
+        // 按钮事件
+        newArticleBtn.addEventListener('click', showArticleEditor);
+        viewArticlesBtn.addEventListener('click', showArticleList);
+        backToEditorBtn.addEventListener('click', showArticleEditor);
+        cancelEditBtn.addEventListener('click', function () {
+            if (articleForm.dataset.editingIndex !== undefined) {
+                delete articleForm.dataset.editingIndex;
+            }
+            showArticleList();
+        });
+
+        // DOMContentLoaded事件添加代码
+        document.addEventListener('DOMContentLoaded', function () {
+            // 配置marked和highlight.js
+            marked.setOptions({
+                highlight: function (code, lang) {
+                    if (lang && hljs.getLanguage(lang)) {
+                        return hljs.highlight(lang, code).value;
+                    }
+                    return hljs.highlightAuto(code).value;
+                },
+                breaks: true,
+                gfm: true
+            });
+
+            // 配置Katex
+            const katexOptions = {
+                delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '$', right: '$', display: false },
+                    { left: '\\(', right: '\\)', display: false },
+                    { left: '\\[', right: '\\]', display: true }
+                ],
+                throwOnError: false
+            };
+
+            // 初始化EasyMDE编辑器
+            let easyMDE = new EasyMDE({
+                element: document.getElementById('article-content'),
+                autoDownloadFontAwesome: false,
+                spellChecker: false,
+                forceSync: true,
+                placeholder: "输入文章内容，支持Markdown和LaTeX数学公式...",
+                toolbar: [
+                    'bold', 'italic', 'heading', '|',
+                    'quote', 'code', '|',
+                    'unordered-list', 'ordered-list', '|',
+                    'link', 'image', 'table', '|',
+                    'preview', 'side-by-side', 'fullscreen', '|',
+                    'guide'
+                ],
+                sideBySideFullscreen: false,
+                status: false,
+                renderingConfig: {
+                    singleLineBreaks: false,
+                    codeSyntaxHighlighting: true
+                }
+            });
+
+            // 保存编辑器实例以便后续使用
+            window.articleEditor = easyMDE;
+
+            // 修改文章保存逻辑以获取编辑器内容
+            // articleForm.addEventListener('submit', function (e) {
+            //     e.preventDefault();
+
+            //     const title = document.getElementById('article-title').value;
+            //     const category = document.getElementById('article-category').value;
+            //     const content = easyMDE.value(); // 从编辑器获取内容
+
+            //     const articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
+
+            //     if (this.dataset.editingIndex !== undefined) {
+            //         // 编辑现有文章
+            //         const index = parseInt(this.dataset.editingIndex);
+            //         articles[index] = {
+            //             title,
+            //             category,
+            //             content,
+            //             timestamp: articles[index].timestamp
+            //         };
+            //         delete this.dataset.editingIndex;
+            //     } else {
+            //         // 添加新文章
+            //         articles.push({
+            //             title,
+            //             category,
+            //             content,
+            //             timestamp: new Date().toISOString()
+            //         });
+            //     }
+
+            //     localStorage.setItem(ARTICLES_KEY, JSON.stringify(articles));
+            //     alert('文章已保存！');
+            //     showArticleList();
+            // });
+
+            // 修改文章查看逻辑以支持Markdown渲染
+            function viewArticle(index) {
+                const articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
+                const article = articles[index];
+
+                // 填充模态框内容
+                document.getElementById('modal-article-title').textContent = article.title;
+                document.getElementById('modal-article-category').textContent = article.category;
+                document.getElementById('modal-article-date').textContent = '发布于: ' +
+                    new Date(article.timestamp).toLocaleString();
+
+                // 渲染Markdown内容
+                const preview = document.getElementById('modal-article-content');
+                preview.innerHTML = marked(article.content);
+                renderMathInElement(preview, katexOptions);
+
+                // 显示模态框
+                document.getElementById('article-modal').style.display = 'block';
+            }
+
+            // 关闭文章模态框
+            document.querySelector('#article-modal .close-btn').addEventListener('click', function () {
+                document.getElementById('article-modal').style.display = 'none';
+            });
+
+            // 点击模态框外部关闭
+            document.getElementById('article-modal').addEventListener('click', function (e) {
+                if (e.target === this) {
+                    this.style.display = 'none';
+                }
+            });
+
+            // 修改editArticle函数以使用编辑器
+            function editArticle(index) {
+                const articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
+                const article = articles[index];
+
+                document.getElementById('article-title').value = article.title;
+                document.getElementById('article-category').value = article.category;
+
+                // 设置编辑器内容
+                if (window.articleEditor) {
+                    window.articleEditor.value(article.content);
+                }
+
+                // 标记当前正在编辑的文章索引
+                articleForm.dataset.editingIndex = index;
+
+                showArticleEditor();
+            }
+        });
+
+        // 辅助函数：动态加载JS
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+
+        // 初始化显示编辑器
+        showArticleEditor();
 
         // 算法模板库数据
         const algorithmTemplates = {
@@ -1999,10 +2597,6 @@ int kruskal(vector<Edge>& edges, int n) {
         });
 
         // 其他按钮功能
-
-        document.getElementById('article-link').addEventListener('click', function () {
-            window.open('https://zhangyimin12345.github.io/snake-test-114514/', '_blank');
-        });
 
         document.getElementById('luogu-team-btn').addEventListener('click', function () {
             window.open('https://www.luogu.com.cn/team/98666', '_blank');
