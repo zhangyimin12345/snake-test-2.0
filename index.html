@@ -12,6 +12,8 @@
             --header-bg: #252526;
             --sidebar-bg: #252526;
             --sidebar-hover: #2a2d2e;
+            --sidebar2-bg: #252526;
+            --sidebar2-hover: #2a2d2e;
             --content-bg: #1e1e1e;
             --button-bg: #3498db;
             --card-bg: #2d2d2d;
@@ -27,6 +29,8 @@
             --header-bg: #ffffff;
             --sidebar-bg: #f0f0f0;
             --sidebar-hover: #e0e0e0;
+            --sidebar2-bg: #f0f0f0;
+            --sidebar2-hover: #e0e0e0;
             --content-bg: #ffffff;
             --button-bg: #2980b9;
             --card-bg: #ffffff;
@@ -49,6 +53,12 @@
         }
 
         .header {
+            position: fixed;
+            /* 改为fixed定位 */
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
             background-color: var(--header-bg);
             color: var(--text-color);
             padding: 10px 20px;
@@ -86,6 +96,10 @@
         }
 
         .sidebar {
+            position: fixed;
+            top: 60px;
+            height: 100vh;
+            left: 0;
             width: 80px;
             background-color: var(--sidebar-bg);
             display: flex;
@@ -122,12 +136,61 @@
             font-size: 12px;
         }
 
+        .sidebar2 {
+            position: fixed;
+            top: 60px;
+            height: 100vh;
+            right: 0;
+            width: 80px;
+            background-color: var(--sidebar2-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            transition: background-color 0.3s;
+            /* z-index: 80; */
+        }
+
+        .sidebar2-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 4px;
+            width: 60px;
+            text-align: center;
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .sidebar2-item:hover {
+            background-color: var(--sidebar2-hover);
+        }
+
+        .sidebar2-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar2-label {
+            font-size: 12px;
+        }
+
         .content {
             flex: 1;
+            margin-left: 80px;
+            /* 给左侧边栏留出空间 */
+            margin-right: 80px;
+            /* 给右侧边栏留出空间 */
+            margin-top: 20px;
             background-color: var(--content-bg);
             padding: 20px 20px 20px 40px;
             transition: background-color 0.3s;
             overflow-y: auto;
+            margin-right: 80px;
+            height: calc(100vh - 60px);
         }
 
         .content h1,
@@ -402,13 +465,15 @@
         /* 时间显示样式 */
         .time-display {
             position: fixed;
-            top: 9px;
+            top: 10px;
             left: 130px;
             font-size: 14px;
             background-color: var(--header-bg);
             padding: 5px 10px;
             border-radius: 4px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            margin: 0;
         }
 
         /* 名人名言样式 */
@@ -773,6 +838,103 @@
             max-height: 90vh;
             overflow-y: auto;
         }
+
+        /* 修改后的模态框样式，添加 snake- 前缀 */
+        .snake-modal {
+            display: none;
+            position: fixed;
+            z-index: var(--modal-zindex);
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .snake-modal-content {
+            background-color: var(--card-bg);
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid var(--card-border);
+            width: 80%;
+            max-width: 900px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border-radius: 8px;
+        }
+
+        .snake-modal-close {
+            color: var(--text-color);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .snake-article-content {
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .snake-article-content img {
+            max-width: 100%;
+        }
+
+        .snake-article-content pre {
+            background-color: var(--sidebar-bg);
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .resources-section {
+            display: none;
+        }
+
+        .resources-section.active-section {
+            display: block;
+        }
+
+        .resources-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .resource-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 15px;
+            transition: transform 0.2s;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .resource-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--button-bg);
+        }
+
+        .resource-desc {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .resource-link {
+            color: var(--highlight-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .resource-link:hover {
+            text-decoration: underline;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- 引入必要的CSS库 -->
@@ -785,6 +947,7 @@
 <body>
     <div class="header">
         <div class="title">Snake-test</div>
+        <div class="time-display" id="time-display"></div>
         <div id="userStatus" style="position: fixed; top: 7px; right: 10px;">
             <span id="userGreeting"></span>
             <button id="logoutBtn" class="luogu-btn" style="display: none; margin-left: 10px;">退出</button>
@@ -837,29 +1000,15 @@
         </div>
     </div>
 
-    <div class="time-display" id="time-display"></div>
-
     <div class="main-container">
         <div class="sidebar">
             <div class="sidebar-item" id="game-link">
                 <div class="sidebar-icon"><i class="fas fa-gamepad"></i></div>
                 <div class="sidebar-label">小游戏</div>
             </div>
-            <div class="sidebar-item" id="algorithm-link">
-                <div class="sidebar-icon"><i class="fas fa-code"></i></div>
-                <div class="sidebar-label">算法模板</div>
-            </div>
             <div class="sidebar-item" id="calendar-link">
                 <div class="sidebar-icon"><i class="fas fa-calendar-alt"></i></div>
                 <div class="sidebar-label">竞赛日历</div>
-            </div>
-            <div class="sidebar-item" id="roadmap-link">
-                <div class="sidebar-icon"><i class="fas fa-map-signs"></i></div>
-                <div class="sidebar-label">学习路线</div>
-            </div>
-            <div class="sidebar-item" id="daily-link">
-                <div class="sidebar-icon"><i class="fas fa-question-circle"></i></div>
-                <div class="sidebar-label">每日一题</div>
             </div>
             <div class="sidebar-item" id="notes-link">
                 <div class="sidebar-icon"><i class="fas fa-book"></i></div>
@@ -871,65 +1020,6 @@
             </div>
         </div>
 
-        <!-- 文章查看模态框 -->
-        <div id="article-modal" class="article-modal">
-            <div class="article-modal-content">
-                <span class="close-btn">&times;</span>
-                <h1 id="modal-article-title"></h1>
-                <div class="article-meta">
-                    <span class="article-category" id="modal-article-category"></span>
-                    <span id="modal-article-date"></span>
-                </div>
-                <div id="modal-article-content" class="article-preview"></div>
-            </div>
-        </div>
-
-        <div id="article-section" class="article-section">
-            <h1>文章</h1>
-            <div class="article-controls">
-                <button id="new-article-btn" class="luogu-btn">新建文章</button>
-                <button id="view-articles-btn" class="luogu-btn">查看文章</button>
-            </div>
-
-            <!-- 文章编辑器 -->
-            <div id="article-editor" class="article-editor">
-                <h3>发布新文章</h3>
-                <form id="article-form" class="article-form">
-                    <div class="form-group">
-                        <label for="article-title">标题:</label>
-                        <input type="text" id="article-title" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="article-category">分类:</label>
-                        <select id="article-category" required>
-                            <option value="教程">教程</option>
-                            <option value="算法">算法</option>
-                            <option value="题解">题解</option>
-                            <option value="公告">公告</option>
-                            <option value="其他">其他</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="article-content">内容 (支持Markdown):</label>
-                        <textarea id="article-content" required></textarea>
-                        <h4>如果要Katex预览，请使用<a href="https://zhangyimin12345.github.io/snake-test-2-markdown/"
-                                target="_blank">随手记</a>。</h4>
-                    </div>
-                    <button type="submit" class="luogu-btn">发布文章</button>
-                    <button type="button" id="cancel-edit" class="luogu-btn">取消</button>
-                </form>
-            </div>
-
-            <!-- 文章列表 -->
-            <div id="article-list" class="article-list">
-                <h3>文章列表</h3>
-                <div id="articles-container">
-                    <!-- 文章将通过JavaScript动态加载 -->
-                </div>
-                <button id="back-to-editor" class="luogu-btn">返回编辑器</button>
-            </div>
-        </div>
-
         <div class="content">
             <!-- Welcome模态框 -->
             <div id="welcomeModal" class="modalwelcome">
@@ -937,13 +1027,81 @@
                     <span class="closewelcome-btn">&times;</span>
                     <div class="welcome-box">
                         <h1>Welcome!</h1>
-                        <h3>欢迎来到Snake-test 2.2！本网站由zhangyimin12345制作，供snake集团成员使用。</h3>
+                        <h3>欢迎来到Snake-test 2.7！本网站由zhangyimin12345制作，供snake集团成员使用。</h3>
                         <h3>用于本人是个HTML辣鸡，有什么建议欢迎提出！</h3>
                         <h3>本网站的主要功能都在侧边栏里，你可以点击查看。推荐用暗色主题。</h3>
                         <h3>注：随手记即Markdown编辑器。</h3>
                         <h3>注：小游戏·跑酷炸了，还没修好。有些地方缺斤少两，慢慢修吧。</h3>
-                        <h3>注：有些东西处于试验阶段，未补充资源或未调用API。“文章”板块还未完全制作完成。</h3>
+                        <h3>注：有些东西处于试验阶段、未补充资源或未调用API。</h3>
+                        <h3>注：时间模态框的无法固定这个bug还在调。</h3>
                     </div>
+                </div>
+            </div>
+
+            <div id="resources-section" class="resources-section">
+                <h1>学习资源</h1>
+
+                <!-- <div class="content"> -->
+                <h3>网站/课程</h3>
+                <div class="resources-list" id="resources-list">
+                    <!-- 学习资源将通过 JavaScript 动态加载 -->
+                </div>
+                <!-- </div> -->
+
+            </div>
+
+            <!-- 文章查看模态框 -->
+            <div id="snake-article-modal" class="snake-modal">
+                <div class="snake-modal-content">
+                    <span class="snake-modal-close">&times;</span>
+                    <h2 id="snake-modal-article-title"></h2>
+                    <div id="snake-modal-article-content" class="snake-article-content"></div>
+                </div>
+            </div>
+
+            <div id="article-section" class="article-section">
+                <h1>文章</h1>
+                <div class="article-controls">
+                    <button id="new-article-btn" class="luogu-btn">新建文章</button>
+                    <button id="view-articles-btn" class="luogu-btn">查看文章</button>
+                </div>
+
+                <!-- 文章编辑器 -->
+                <div id="article-editor" class="article-editor">
+                    <h3>发布新文章</h3>
+                    <form id="article-form" class="article-form">
+                        <div class="form-group">
+                            <label for="article-title">标题:</label>
+                            <input type="text" id="article-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="article-category">分类:</label>
+                            <select id="article-category" required>
+                                <option value="教程">教程</option>
+                                <option value="算法">算法</option>
+                                <option value="题解">题解</option>
+                                <option value="公告">公告</option>
+                                <option value="其他">其他</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="article-content">内容 (支持Markdown):</label>
+                            <textarea id="article-content" required></textarea>
+                            <h4>如果要Katex预览，请使用<a href="https://zhangyimin12345.github.io/snake-test-2-markdown/"
+                                    target="_blank">随手记</a>。</h4>
+                        </div>
+                        <button type="submit" class="luogu-btn">发布文章</button>
+                        <button type="button" id="cancel-edit" class="luogu-btn">取消</button>
+                    </form>
+                </div>
+
+                <!-- 文章列表 -->
+                <div id="article-list" class="article-list">
+                    <h3>文章列表</h3>
+                    <div id="articles-container">
+                        <!-- 文章将通过JavaScript动态加载 -->
+                    </div>
+                    <button id="back-to-editor" class="luogu-btn">返回编辑器</button>
                 </div>
             </div>
 
@@ -1016,6 +1174,25 @@
                 </div>
             </div>
         </div>
+
+        <div class="sidebar2">
+            <div class="sidebar2-item" id="resources-link">
+                <div class="sidebar2-icon"><i class="fas fa-book-reader"></i></div>
+                <div class="sidebar2-label">学习资源</div>
+            </div>
+            <div class="sidebar2-item" id="algorithm-link">
+                <div class="sidebar2-icon"><i class="fas fa-code"></i></div>
+                <div class="sidebar2-label">算法模板</div>
+            </div>
+            <div class="sidebar2-item" id="roadmap-link">
+                <div class="sidebar2-icon"><i class="fas fa-map-signs"></i></div>
+                <div class="sidebar2-label">学习路线</div>
+            </div>
+            <div class="sidebar2-item" id="daily-link">
+                <div class="sidebar2-icon"><i class="fas fa-question-circle"></i></div>
+                <div class="sidebar2-label">每日一题</div>
+            </div>
+        </div>
     </div>
 
     <button class="theme-toggle" id="theme-toggle">
@@ -1058,6 +1235,50 @@
             }
         });
 
+        // 修改后的模态框函数，使用 snake- 前缀
+        function openSnakeArticleModal(title, content) {
+            const modal = document.getElementById('snake-article-modal');
+            const titleElement = document.getElementById('snake-modal-article-title');
+            const contentElement = document.getElementById('snake-modal-article-content');
+
+            // 设置标题和内容
+            titleElement.textContent = title;
+            contentElement.innerHTML = marked.parse(content || '');
+
+            // 渲染数学公式
+            renderMathInElement(contentElement, {
+                delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '$', right: '$', display: false }
+                ],
+                throwOnError: false
+            });
+
+            // 显示模态框
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // 禁止背景滚动
+        }
+
+        function closeSnakeArticleModal() {
+            document.getElementById('snake-article-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // 修改后的事件绑定
+        document.querySelector('.snake-modal-close').onclick = closeSnakeArticleModal;
+
+        window.addEventListener('click', function (event) {
+            if (event.target === document.getElementById('snake-article-modal')) {
+                closeSnakeArticleModal();
+            }
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeSnakeArticleModal();
+            }
+        });
+
         // 侧边栏导航功能
         const sections = {
             'game-link': 'game-section',
@@ -1066,13 +1287,14 @@
             'roadmap-link': 'roadmap-section',
             'daily-link': 'daily-section',
             'notes-link': 'home-section',
-            'article-link': 'article-section'
+            'article-link': 'article-section',
+            'resources-link': 'resources-section'  // 添加资源链接
         };
 
         Object.keys(sections).forEach(id => {
             document.getElementById(id).addEventListener('click', function () {
-                // 隐藏所有部分 - 现在也包括article-section
-                document.querySelectorAll('.algorithm-section, #home-section, .calendar-section, .roadmap-section, .daily-section, .game-section, .weather-section, .article-section').forEach(section => {
+                // 隐藏所有部分
+                document.querySelectorAll('.algorithm-section, #home-section, .calendar-section, .roadmap-section, .daily-section, .game-section, .weather-section, .article-section, .resources-section').forEach(section => {
                     section.classList.remove('active-section');
                 });
 
@@ -1089,6 +1311,8 @@
                     renderRoadmapSteps();
                 } else if (id === 'daily-link') {
                     renderDailyProblems();
+                } else if (id === 'resources-link') {
+                    renderLearningResources();
                 }
             });
         });
@@ -1158,7 +1382,10 @@
             // 添加按钮事件
             document.querySelectorAll('.view-article-btn').forEach(btn => {
                 btn.addEventListener('click', function () {
-                    viewArticle(parseInt(this.getAttribute('data-index')));
+                    const index = parseInt(this.getAttribute('data-index')); // 确保正确获取 data-index
+                    const articles = JSON.parse(localStorage.getItem('snake_test_articles'));
+                    const article = articles[index];
+                    openSnakeArticleModal(article.title, article.content);
                 });
             });
 
@@ -1183,6 +1410,55 @@
             // 这里可以弹出一个模态框显示完整文章内容
             alert(`标题: ${article.title}\n分类: ${article.category}\n\n${article.content}`);
         }
+
+        /**
+ * 打开文章模态框（支持Markdown+KaTeX）
+ * @param {string} title - 文章标题
+ * @param {string} content - Markdown内容
+ */
+        function openSnakeArticleModal(title, content) {
+            const modal = document.getElementById('snake-article-modal');
+            const titleElement = document.getElementById('snake-modal-article-title');
+            const contentElement = document.getElementById('snake-modal-article-content');
+
+            // 设置标题和内容
+            titleElement.textContent = title;
+            contentElement.innerHTML = marked.parse(content || '');
+
+            // 渲染数学公式
+            renderMathInElement(contentElement, {
+                delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '$', right: '$', display: false }
+                ],
+                throwOnError: false
+            });
+
+            // 显示模态框
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // 禁止背景滚动
+        }
+
+        /**
+         * 关闭文章模态框
+         */
+        function closeSnakeArticleModal() {
+            document.getElementById('snake-article-modal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // 恢复滚动
+        }
+
+        // 绑定关闭事件
+        document.querySelector('.snake-modal-close').addEventListener('click', closeSnakeArticleModal);
+        window.addEventListener('click', (event) => {
+            if (event.target === document.getElementById('snake-article-modal')) {
+                closeSnakeArticleModal();
+            }
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeSnakeArticleModal();
+            }
+        });
 
         // 编辑文章
         function editArticle(index) {
@@ -1306,41 +1582,6 @@
             // 保存编辑器实例以便后续使用
             window.articleEditor = easyMDE;
 
-            // 修改文章保存逻辑以获取编辑器内容
-            // articleForm.addEventListener('submit', function (e) {
-            //     e.preventDefault();
-
-            //     const title = document.getElementById('article-title').value;
-            //     const category = document.getElementById('article-category').value;
-            //     const content = easyMDE.value(); // 从编辑器获取内容
-
-            //     const articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
-
-            //     if (this.dataset.editingIndex !== undefined) {
-            //         // 编辑现有文章
-            //         const index = parseInt(this.dataset.editingIndex);
-            //         articles[index] = {
-            //             title,
-            //             category,
-            //             content,
-            //             timestamp: articles[index].timestamp
-            //         };
-            //         delete this.dataset.editingIndex;
-            //     } else {
-            //         // 添加新文章
-            //         articles.push({
-            //             title,
-            //             category,
-            //             content,
-            //             timestamp: new Date().toISOString()
-            //         });
-            //     }
-
-            //     localStorage.setItem(ARTICLES_KEY, JSON.stringify(articles));
-            //     alert('文章已保存！');
-            //     showArticleList();
-            // });
-
             // 修改文章查看逻辑以支持Markdown渲染
             function viewArticle(index) {
                 const articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
@@ -1359,6 +1600,7 @@
 
                 // 显示模态框
                 document.getElementById('article-modal').style.display = 'block';
+                openSnakeArticleModal(article.title, article.content);
             }
 
             // 关闭文章模态框
@@ -1599,6 +1841,34 @@ int kruskal(vector<Edge>& edges, int n) {
                 }
             ]
         };
+
+        const learningResources = [
+            {
+                title: "Codecademy",
+                desc: "交互式编程学习平台，适合初学者。",
+                link: "https://www.codecademy.com/"
+            },
+            {
+                title: "LeetCode",
+                desc: "刷题平台，提升算法能力。",
+                link: "https://leetcode.com/"
+            },
+            {
+                title: "GeeksforGeeks",
+                desc: "全面的编程教程和面试准备资源。",
+                link: "https://www.geeksforgeeks.org/"
+            },
+            {
+                title: "FreeCodeCamp",
+                desc: "免费编程课程，涵盖前端、后端和数据分析。",
+                link: "https://www.freecodecamp.org/"
+            },
+            {
+                title: "CS50",
+                desc: "哈佛大学的计算机科学入门课程。",
+                link: "https://cs50.harvard.edu/"
+            }
+        ];
 
         // 竞赛日历数据
         const programmingContests = [
@@ -2245,6 +2515,47 @@ int kruskal(vector<Edge>& edges, int n) {
             }
         ];
 
+        function renderLearningResources() {
+            const container = document.getElementById('resources-list');
+            container.innerHTML = '';
+
+            learningResources.forEach(resource => {
+                const card = document.createElement('div');
+                card.className = 'resource-card';
+                card.innerHTML = `
+            <div class="resource-title">${resource.title}</div>
+            <div class="resource-desc">${resource.desc}</div>
+            <a href="${resource.link}" target="_blank" class="resource-link">访问资源</a>
+        `;
+                container.appendChild(card);
+            });
+        }
+
+        //sections['resources-link'] = 'resources-section';
+
+        Object.keys(sections).forEach(id => {
+            document.getElementById(id).addEventListener('click', function () {
+                // document.querySelectorAll('.algorithm-section, #home-section, .calendar-section, .roadmap-section, .daily-section, .game-section, .weather-section, .article-section, .resources-section').forEach(section => {
+                //     section.classList.remove('active-section');
+                // });
+
+                document.querySelectorAll('.algorithm-section, #home-section, .calendar-section, .roadmap-section, .daily-section, .game-section, .weather-section, .article-section').forEach(section => {
+                    section.classList.remove('active-section');
+                });
+
+                const sectionToShow = sections[id];
+                document.getElementById(sectionToShow).classList.add('active-section');
+
+                if (id === 'resources-link') {
+                    renderLearningResources();
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            renderLearningResources();
+        });
+
         // 渲染算法卡片
         function renderAlgorithmCards(category) {
             const container = document.getElementById('algorithm-cards');
@@ -2610,7 +2921,7 @@ int kruskal(vector<Edge>& edges, int n) {
         updateTime();
         setInterval(updateTime, 1000);
         showRandomQuote();
-        setInterval(showRandomQuote, 60000); // 每分钟更换一次名言
+        setInterval(showRandomQuote, 12000); // 更换名言
     </script>
 </body>
 
