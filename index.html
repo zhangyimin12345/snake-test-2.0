@@ -54,7 +54,6 @@
 
         .header {
             position: fixed;
-            /* 改为fixed定位 */
             top: 0;
             left: 0;
             right: 0;
@@ -97,7 +96,7 @@
 
         .sidebar {
             position: fixed;
-            top: 60px;
+            top: 40px;
             height: 100vh;
             left: 0;
             width: 80px;
@@ -138,7 +137,7 @@
 
         .sidebar2 {
             position: fixed;
-            top: 60px;
+            top: 40px;
             height: 100vh;
             right: 0;
             width: 80px;
@@ -148,7 +147,6 @@
             align-items: center;
             padding-top: 20px;
             transition: background-color 0.3s;
-            /* z-index: 80; */
         }
 
         .sidebar2-item {
@@ -191,6 +189,7 @@
             overflow-y: auto;
             margin-right: 80px;
             height: calc(100vh - 60px);
+            z-index: 0;
         }
 
         .content h1,
@@ -223,6 +222,30 @@
             transform: scale(1.1);
         }
 
+        .settings-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 70px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, transform 0.2s;
+            z-index: 100;
+        }
+
+        .settings-toggle:hover {
+            transform: scale(1.1);
+        }
+
         /* 确保所有内容区域默认隐藏 */
         .algorithm-section,
         .calendar-section,
@@ -230,7 +253,8 @@
         .daily-section,
         .game-section,
         .weather-section,
-        .article-section {
+        .article-section,
+        .discussion-section {
             display: none;
         }
 
@@ -342,6 +366,47 @@
 
         .active-section {
             display: block;
+        }
+
+        /* 加载界面样式 */
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(30, 30, 30, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader {
+            position: relative;
+        }
+
+        .bar {
+            width: 15em;
+            height: 15em;
+            border-radius: 50%;
+            border: 8px solid transparent;
+            border-top: 8px solid rgb(255, 255, 255);
+            animation: spin 0.8s linear infinite;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: rotate(360deg);
+                opacity: 0.8;
+            }
         }
 
         /* 竞赛日历特定样式 */
@@ -935,8 +1000,160 @@
         .resource-link:hover {
             text-decoration: underline;
         }
+
+        /* 设置面板样式 */
+        .settings-panel {
+            display: none;
+            position: fixed;
+            bottom: 70px;
+            right: 70px;
+            width: 250px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 101;
+        }
+
+        .settings-panel h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: var(--button-bg);
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .setting-label {
+            font-size: 14px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: var(--button-bg);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        .article-card.official {
+            border-left: 4px solid var(--highlight-color);
+        }
+
+        .article-card .official-badge {
+            display: inline-block;
+            background-color: var(--highlight-color);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .comments-section {
+            margin-top: 30px;
+            border-top: 1px solid var(--card-border);
+            padding-top: 20px;
+        }
+
+        .comment-form {
+            margin-top: 20px;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--card-border);
+            border-radius: 4px;
+            background-color: var(--sidebar-bg);
+            color: var(--text-color);
+            min-height: 80px;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+
+        .comment {
+            background-color: var(--sidebar-bg);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: var(--button-bg);
+        }
+
+        .comment-date {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        .comment-content {
+            line-height: 1.5;
+        }
+
+        .favorite-btn.active {
+            background-color: var(--highlight-color);
+        }
+
+        .favorites-section {
+            display: none;
+        }
+
+        .favorites-section.active-section {
+            display: block;
+        }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- 引入必要的CSS库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
@@ -945,6 +1162,16 @@
 </head>
 
 <body>
+    <!-- 添加加载动画 -->
+    <div class="loader-overlay" id="loader" style="display: flex; opacity: 1; z-index: 100000000;">
+        <div class="loader">
+            <div class="bar"></div>
+        </div>
+        <div style="position: fixed; opacity: 1; z-index: 10000001;">
+            <strong>拼命加载中，请稍等...<br>如果卡住了，<br>请刷新或检查网络。</strong>
+        </div>
+    </div>
+
     <div class="header">
         <div class="title">Snake-test</div>
         <div class="time-display" id="time-display"></div>
@@ -1016,7 +1243,19 @@
             </div>
             <div class="sidebar-item" id="article-link">
                 <div class="sidebar-icon"><i class="fas fa-file-alt"></i></div>
-                <div class="sidebar-label">文章（剪贴板）</div>
+                <div class="sidebar-label">文章</div>
+            </div>
+            <div class="sidebar-item" id="editor-link">
+                <div class="sidebar-icon"><i class="fas fa-laptop-code"></i></div>
+                <div class="sidebar-label">编辑器</div>
+            </div>
+            <div class="sidebar-item" id="favorites-link">
+                <div class="sidebar-icon"><i class="fas fa-heart"></i></div>
+                <div class="sidebar-label">收藏</div>
+            </div>
+            <div class="sidebar-item" id="discussion-link">
+                <div class="sidebar-icon"><i class="fas fa-paper-plane"></i></div>
+                <div class="sidebar-label">讨论</div>
             </div>
         </div>
 
@@ -1027,15 +1266,44 @@
                     <span class="closewelcome-btn">&times;</span>
                     <div class="welcome-box">
                         <h1>Welcome!</h1>
-                        <h3>欢迎来到Snake-test 2.7！本网站由zhangyimin12345制作，供snake集团成员使用。</h3>
-                        <h3>用于本人是个HTML辣鸡，有什么建议欢迎提出！</h3>
+                        <h3>欢迎来到Snake-test 2.9！本网站由zhangyimin12345 &amp; wbw121124制作，供snake集团成员使用。</h3>
+                        <h3>用于作者们是HTML辣鸡，有什么建议欢迎提出！</h3>
                         <h3>本网站的主要功能都在侧边栏里，你可以点击查看。推荐用暗色主题。</h3>
+                        <h3>注：因为没有后端，切换浏览器、电脑所有数据都会清除！！！</h3>
                         <h3>注：随手记即Markdown编辑器。</h3>
+                        <h3>注：文章功能炸了。</h3>
                         <h3>注：小游戏·跑酷炸了，还没修好。有些地方缺斤少两，慢慢修吧。</h3>
                         <h3>注：有些东西处于试验阶段、未补充资源或未调用API。</h3>
-                        <h3>注：时间模态框的无法固定这个bug还在调。</h3>
+                        <h3>鸣谢：wbw121124提供了编辑器功能。</h3>
                     </div>
                 </div>
+            </div>
+
+            <div id="discussion-section" class="discussion-section">
+                <main id="test-snake-chat"> <span
+                        style="display: inline-flex; flex-direction: row; flex-wrap: nowrap; align-content: flex-start; justify-content: flex-start; margin: 0; padding: 0; align-items: center; background-color: #F6F8FA; box-sizing: border-box; border-radius: .375rem; border-color: #d0d7de; border: 0 solid !important;">
+                        <button id="utteranc-btn" onclick="showchatbox(1)" class="btn1"> utteranc </button> <button
+                            id="giscus-btn" onclick="showchatbox(2)" class="btn1 clicked"> giscus </button>
+                        <script> function showchatbox(x) { if (x == 2) { document.getElementById("comments-style").innerHTML = `#comments-1 { display: none; } #comments-2 { display: block; }`; document.getElementById("giscus-btn").classList.add("clicked"); document.getElementById("utteranc-btn").classList.add("clicked"); document.getElementById("utteranc-btn").classList.remove("clicked"); } else { document.getElementById("comments-style").innerHTML = `#comments-2 { display: none; } #comments-1 { display: block; }`; document.getElementById("utteranc-btn").classList.add("clicked"); document.getElementById("giscus-btn").classList.add("clicked"); document.getElementById("giscus-btn").classList.remove("clicked"); } } </script>
+                    </span>
+                    <div id="comments-1">
+                        <script src="https://utteranc.es/client.js" repo="zhangyimin12345/snake-test-3.2"
+                            label="Utterances" issue-term="url" theme="github-light" crossorigin="anonymous"
+                            async> </script>
+                    </div>
+                    <div id="comments-2">
+                        <script src="https://giscus.app/client.js" data-repo="zhangyimin12345/snake-test-3.2"
+                            data-repo-id="R_kgDOOUxsrw" data-category="Announcements"
+                            data-category-id="DIC_kwDOOUxsr84CpE_I" data-mapping="url" data-strict="1"
+                            data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top"
+                            data-theme="light" data-lang="zh-CN" crossorigin="anonymous" async> </script>
+                    </div>
+                </main>
+            </div>
+
+            <div id="favorites-section" class="favorites-section">
+                <h1>收藏</h1>
+                <div id="favorites-container"></div>
             </div>
 
             <div id="resources-section" class="resources-section">
@@ -1056,11 +1324,22 @@
                     <span class="snake-modal-close">&times;</span>
                     <h2 id="snake-modal-article-title"></h2>
                     <div id="snake-modal-article-content" class="snake-article-content"></div>
+                    <div class="comments-section">
+                        <h3>评论</h3>
+                        <div id="comments-container-${articleId}"></div>
+                        <div class="comment-form">
+                            <textarea id="comment-input-${articleId}" placeholder="写下你的评论..."></textarea>
+                            <button class="luogu-btn submit-comment" data-article="${articleId}">提交评论</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div id="article-section" class="article-section">
                 <h1>文章</h1>
+                <h3>其实就是剪贴板。</h3>
+                <h3>注：因为没有后端，切换浏览器、电脑所有数据都会清除！！！</h3>
+                <h3>注：如果有高质量的文章，并且学术相关（如DeepSeek替代品列表），请检查Markdown中是否有"号与\n符号，如果没有，请把Markdown发给zhangyimin12345。</h3>
                 <div class="article-controls">
                     <button id="new-article-btn" class="luogu-btn">新建文章</button>
                     <button id="view-articles-btn" class="luogu-btn">查看文章</button>
@@ -1082,6 +1361,7 @@
                                 <option value="题解">题解</option>
                                 <option value="公告">公告</option>
                                 <option value="其他">其他</option>
+                                <option value="官方">官方</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -1169,6 +1449,22 @@
                 <h1>每日一题</h1>
                 <h3>每日精选编程题目，提升算法能力（试验阶段）</h3>
 
+                <button class="view-btn" onclick="(() => {
+	function goto_url(url, param) {
+		var flag = 0;
+		for (var key in param) {
+			url = url + ((!flag) ? '?' : '&');
+			url = url + key + '=' + encodeURIComponent(param[key]);
+			flag = 1;
+		}
+		window.location = url;
+	};
+	goto_url('https://www.luogu.com.cn/problemnew/show/P' +
+		(parseInt(Math.random(0, 1) * 9800) + 1000));
+})();">洛谷随机跳题</button>
+                <br />
+                <p>本期内容：<strong>最短路</strong></p>
+                <p>由 <strong>AI</strong> 筛选，内容可能有误</p>
                 <div class="daily-problems" id="daily-problems">
                     <!-- 内容将通过JavaScript动态加载 -->
                 </div>
@@ -1199,18 +1495,46 @@
         <i class="fas fa-moon"></i>
     </button>
 
+    <button class="settings-toggle fas fa-cog" id="settings-toggle"></button>
+
+    <!-- 设置面板 -->
+    <div class="settings-panel" id="settings-panel">
+        <h3>设置</h3>
+        <div class="setting-item">
+            <span class="setting-label">波浪效果</span>
+            <label class="switch">
+                <input type="checkbox" id="wave-effect-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="setting-item">
+            <span class="setting-label">雪花效果</span>
+            <label class="switch">
+                <input type="checkbox" id="snow-effect-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="setting-item">
+            <span class="setting-label">名人名言</span>
+            <label class="switch">
+                <input type="checkbox" id="quote-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
     <div class="quote-container" id="quote-container">
         <div class="quote-text" id="quote-text"></div>
         <div class="quote-author" id="quote-author"></div>
     </div>
 
-    <script src="https://api.vvhan.com/api/script/bolang"></script>
-    <script src="https://api.vvhan.com/api/script/snow"></script>
+    <!-- 脚本加载改为动态 -->
     <script src="https://cdn.jsdelivr.net/npm/marked@4.2.12/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/core.min.js"></script>
+    <script src="https://cdn.staticfile.net/highlight.js/11.7.0/highlight.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.js"></script>
+    <script>(() => { const canvas = document.createElement('canvas'); document.body.appendChild(canvas); canvas.style = "display: block;position: fixed;top: 0;left: 0;pointer-events: none;"; const ctx = canvas.getContext('2d'); function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight } resizeCanvas(); window.addEventListener('resize', () => { resizeCanvas() }); const gravity = 0.5; const damping = 0.8; const ballRadius = 7.5; let balls = []; class Ball { constructor(x, y, radius) { this.x = x; this.y = y; this.cnt = 0; this.radius = radius * (Math.random() + 0.75); this.vx = (Math.random() - 0.5) * 12.5; this.vy = (Math.random() * 2 - 1.25) * 10; this.mass = radius * 0.5; this.color = `hsl(${Math.random() * 360},70%,50%)`; this.tot = 0; this.type = Math.random() > 0.5 } update() { this.vy += gravity; this.x += this.vx; this.y += this.vy; let last = this.tot; if (this.x < this.radius) { this.vx *= -damping; this.x = this.radius; this.tot++ } if (this.x > canvas.width - this.radius) { this.vx *= -damping; this.x = canvas.width - this.radius; this.tot++ } if (this.y < this.radius) { this.vy *= -damping; this.y = this.radius; this.tot++ } if (this.y > canvas.height - this.radius) { this.vy *= -damping; this.y = canvas.height - this.radius; this.tot++ } last = this.tot - last; if (last > 0) this.radius = this.radius * 7 / 8 } draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.fill(); ctx.closePath() } } function checkCollisions() { for (let i = 0; i < balls.length; i++) { for (let j = i + 1; j < balls.length; j++) { const ball1 = balls[i]; const ball2 = balls[j]; const dx = ball2.x - ball1.x; const dy = ball2.y - ball1.y; const distance = Math.sqrt(dx * dx + dy * dy); if (distance < ball1.radius + ball2.radius) { const nx = dx / distance; const ny = dy / distance; const dvx = ball2.vx - ball1.vx; const dvy = ball2.vy - ball1.vy; const dotProduct = dvx * nx + dvy * ny; if (dotProduct >= 0) continue; const impulse = (-(1 + damping) * dotProduct) / (1 / ball1.mass + 1 / ball2.mass); ball1.vx -= (impulse * nx) / ball1.mass; ball1.vy -= (impulse * ny) / ball1.mass; ball2.vx += (impulse * nx) / ball2.mass; ball2.vy += (impulse * ny) / ball2.mass; const overlap = (ball1.radius + ball2.radius - distance) / 2; ball1.x -= nx * overlap; ball1.y -= ny * overlap; ball2.x += nx * overlap; ball2.y += ny * overlap } } } } function init() { for (let i = 0; i < 10; i++) { balls.push(new Ball(Math.random() * (canvas.width - 2 * ballRadius) + ballRadius, Math.random() * (canvas.height - 2 * ballRadius) + ballRadius, ballRadius)) } } function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); balls.forEach(ball => { ball.cnt++; ball.update(); ball.draw() }); for (let i = 0; i < balls.length; i++) { if ((balls[i].cnt > 10000 || balls[i].radius < 0.01) && balls.length > 5) { balls.splice(i, 1); i-- } } while (balls.length > 25) { balls.splice(0, 1) } checkCollisions(); requestAnimationFrame(animate) } document.addEventListener('click', (e) => { for (let i = 0; i < 5; i++) { balls.push(new Ball(e.clientX, e.clientY, ballRadius)) } }); init(); animate() })();</script>
     <script>
         // 主题切换功能
         const themeToggle = document.getElementById('theme-toggle');
@@ -1235,28 +1559,164 @@
             }
         });
 
-        // 修改后的模态框函数，使用 snake- 前缀
-        function openSnakeArticleModal(title, content) {
+        // 设置面板功能
+        const settingsToggle = document.getElementById('settings-toggle');
+        const settingsPanel = document.getElementById('settings-panel');
+
+        settingsToggle.addEventListener('click', function () {
+            if (settingsPanel.style.display === 'block') {
+                settingsPanel.style.display = 'none';
+            } else {
+                settingsPanel.style.display = 'block';
+            }
+        });
+
+        // 点击设置面板外部关闭面板
+        document.addEventListener('click', function (event) {
+            if (!settingsPanel.contains(event.target) && event.target !== settingsToggle) {
+                settingsPanel.style.display = 'none';
+            }
+        });
+
+        // 存储键名
+        const COMMENTS_KEY = 'snake_test_comments';
+        const FAVORITES_KEY = 'snake_test_favorites';
+
+        // 初始化存储
+        if (!localStorage.getItem(COMMENTS_KEY)) {
+            localStorage.setItem(COMMENTS_KEY, JSON.stringify({}));
+        }
+
+        if (!localStorage.getItem(FAVORITES_KEY)) {
+            localStorage.setItem(FAVORITES_KEY, JSON.stringify({}));
+        }
+
+        // 获取当前用户
+        function getCurrentUser() {
+            const currentUser = JSON.parse(localStorage.getItem(CURRENT_USER_KEY));
+            return currentUser ? currentUser.username : null;
+        }
+
+        // 添加评论功能
+        function addComment(articleId, content) {
+            const user = getCurrentUser();
+            if (!user) {
+                alert('请先登录后再评论');
+                return false;
+            }
+
+            if (!content.trim()) {
+                alert('评论内容不能为空');
+                return false;
+            }
+
+            const comments = JSON.parse(localStorage.getItem(COMMENTS_KEY));
+            if (!comments[articleId]) {
+                comments[articleId] = [];
+            }
+
+            comments[articleId].push({
+                author: user,
+                content: content,
+                timestamp: new Date().toISOString()
+            });
+
+            localStorage.setItem(COMMENTS_KEY, JSON.stringify(comments));
+            return true;
+        }
+
+        // 渲染评论
+        function renderComments(articleId) {
+            const container = document.getElementById(`comments-container-${articleId}`);
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            const comments = JSON.parse(localStorage.getItem(COMMENTS_KEY));
+            if (!comments[articleId] || comments[articleId].length === 0) {
+                container.innerHTML = '<p>暂无评论</p>';
+                return;
+            }
+
+            comments[articleId].forEach(comment => {
+                const commentEl = document.createElement('div');
+                commentEl.className = 'comment';
+                commentEl.innerHTML = `
+            <div class="comment-header">
+                <span class="comment-author">${comment.author}</span>
+                <span class="comment-date">${new Date(comment.timestamp).toLocaleString()}</span>
+            </div>
+            <div class="comment-content">${comment.content}</div>
+        `;
+                container.appendChild(commentEl);
+            });
+        }
+
+        // 收藏功能
+        function toggleFavorite(articleId) {
+            const user = getCurrentUser();
+            if (!user) {
+                alert('请先登录后再收藏');
+                return false;
+            }
+
+            const favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY));
+            if (!favorites[user]) {
+                favorites[user] = [];
+            }
+
+            const index = favorites[user].indexOf(articleId);
+            if (index === -1) {
+                favorites[user].push(articleId);
+            } else {
+                favorites[user].splice(index, 1);
+            }
+
+            localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+            renderArticles(); // 更新文章列表
+            return true;
+        }
+
+        // 检查是否已收藏
+        function isFavorite(articleId) {
+            const user = getCurrentUser();
+            if (!user) return false;
+
+            const favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY));
+            return favorites[user] && favorites[user].includes(articleId);
+        }
+
+        function openSnakeArticleModal(title, content, articleId) {
             const modal = document.getElementById('snake-article-modal');
             const titleElement = document.getElementById('snake-modal-article-title');
             const contentElement = document.getElementById('snake-modal-article-content');
 
-            // 设置标题和内容
             titleElement.textContent = title;
-            contentElement.innerHTML = marked.parse(content || '');
+            contentElement.innerHTML = marked.parse(content || '') + `
+        <div class="comments-section">
+            <h3>评论</h3>
+            <div id="comments-container-${articleId}"></div>
+            <div class="comment-form">
+                <textarea id="comment-input-${articleId}" placeholder="写下你的评论..."></textarea>
+                <button class="luogu-btn submit-comment" data-article="${articleId}">提交评论</button>
+            </div>
+        </div>
+    `;
 
-            // 渲染数学公式
-            renderMathInElement(contentElement, {
-                delimiters: [
-                    { left: '$$', right: '$$', display: true },
-                    { left: '$', right: '$', display: false }
-                ],
-                throwOnError: false
+            // 渲染评论
+            renderComments(articleId);
+
+            // 绑定评论提交事件
+            document.querySelector(`.submit-comment[data-article="${articleId}"]`).addEventListener('click', function () {
+                const content = document.getElementById(`comment-input-${articleId}`).value;
+                if (addComment(articleId, content)) {
+                    document.getElementById(`comment-input-${articleId}`).value = '';
+                    renderComments(articleId);
+                }
             });
 
-            // 显示模态框
             modal.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // 禁止背景滚动
+            document.body.style.overflow = 'hidden';
         }
 
         function closeSnakeArticleModal() {
@@ -1288,13 +1748,15 @@
             'daily-link': 'daily-section',
             'notes-link': 'home-section',
             'article-link': 'article-section',
-            'resources-link': 'resources-section'  // 添加资源链接
+            'resources-link': 'resources-section',
+            'favorites-link': 'favorites-section',
+            'discussion-link': 'discussion-section'
         };
 
         Object.keys(sections).forEach(id => {
             document.getElementById(id).addEventListener('click', function () {
                 // 隐藏所有部分
-                document.querySelectorAll('.algorithm-section, #home-section, .calendar-section, .roadmap-section, .daily-section, .game-section, .weather-section, .article-section, .resources-section').forEach(section => {
+                document.querySelectorAll('.algorithm-section, #home-section, .calendar-section, .roadmap-section, .daily-section, .game-section, .weather-section, .article-section, .resources-section, .favorites-section, .discussion-section').forEach(section => {
                     section.classList.remove('active-section');
                 });
 
@@ -1317,8 +1779,116 @@
             });
         });
 
+        // 渲染收藏页面
+        function renderFavorites() {
+            const container = document.getElementById('favorites-container');
+            container.innerHTML = '';
+
+            const user = getCurrentUser();
+            if (!user) {
+                container.innerHTML = '<p>请先登录查看收藏</p>';
+                return;
+            }
+
+            const favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY))[user] || [];
+            if (favorites.length === 0) {
+                container.innerHTML = '<p>暂无收藏</p>';
+                return;
+            }
+
+            const allArticles = [...officialArticles, ...JSON.parse(localStorage.getItem(ARTICLES_KEY))];
+
+            favorites.forEach(articleId => {
+                const article = allArticles.find(a => a.id === articleId);
+
+                if (article) {
+                    const isOfficial = articleId.startsWith('official-');
+                    const card = document.createElement('div');
+                    card.className = 'article-card';
+                    card.innerHTML = `
+                <h3>${article.title}</h3>
+                <div class="article-meta">
+                    <span class="article-category">${article.category}</span>
+                    <span>发布于: ${new Date(article.timestamp).toLocaleString()}</span>
+                    ${isOfficial ? '<span style="color: var(--highlight-color); margin-left: 10px;">(官方)</span>' : ''}
+                </div>
+                <div class="article-content">${article.content.substring(0, 100)}${article.content.length > 100 ? '...' : ''}</div>
+                <div class="article-actions">
+                    <button class="luogu-btn view-article-btn" data-id="${articleId}">查看</button>
+                    <button class="luogu-btn remove-favorite-btn" data-id="${articleId}">取消收藏</button>
+                </div>
+            `;
+                    container.appendChild(card);
+                }
+            });
+
+            // 添加查看按钮事件
+            document.querySelectorAll('.view-article-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const articleId = `article-${Date.now()}`;
+                    const allArticles = [...officialArticles, ...JSON.parse(localStorage.getItem(ARTICLES_KEY))];
+                    const article = allArticles.find(a => a.id === articleId);
+
+                    if (article) {
+                        openSnakeArticleModal(article.title, article.content, false, articleId);
+                    }
+                });
+            });
+
+            // 添加取消收藏按钮事件
+            document.querySelectorAll('.remove-favorite-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const articleId = `article-${Date.now()}`;
+                    const user = getCurrentUser();
+
+                    if (user) {
+                        const favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY));
+                        if (favorites[user]) {
+                            const index = favorites[user].indexOf(articleId);
+                            if (index !== -1) {
+                                favorites[user].splice(index, 1);
+                                localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+                                renderFavorites();
+                                renderArticles(); // 更新文章列表中的收藏状态
+                            }
+                        }
+                    }
+                });
+            });
+        }
+
+        // 在侧边栏点击事件中添加
+        document.getElementById('favorites-link').addEventListener('click', function () {
+            // 隐藏所有部分
+            document.querySelectorAll('.algorithm-section, #home-section, .calendar-section, .roadmap-section, .daily-section, .game-section, .weather-section, .article-section, .resources-section, .favorites-section').forEach(section => {
+                section.classList.remove('active-section');
+            });
+
+            // 显示收藏部分
+            document.getElementById('favorites-section').classList.add('active-section');
+            renderFavorites();
+        });
+
         // 文章数据存储
         const ARTICLES_KEY = 'snake_test_articles';
+
+        // 官方文章数据
+        const officialArticles = [
+            {
+                title: "Snake-test 使用指南",
+                category: "官方",
+                content: "## Snake-test 使用指南\n\n欢迎使用Snake-test平台！本指南将帮助您快速了解平台功能。\n\n### 主要功能\n1. **小游戏** - 提供多种编程相关小游戏\n2. **算法模板** - 常用算法代码模板库\n3. **竞赛日历** - 编程竞赛时间表\n4. **学习资源** - 精选编程学习资料\n\n### 注意事项\n- 请遵守平台使用规则\n- 定期备份您的重要文章\n- 遇到问题请联系管理员",
+                timestamp: "NAN",
+                id: "official-Snake-test 使用指南-NAN"
+            },
+            {
+                title: "Snake 集团 N倍经验",
+                category: "官方",
+                content: "# $N$ 倍经验\n> 注意：虽然部分来自网络，但也不要给他人，仅[snake集团](https://www.luogu.com.cn/team/98666)成员使用，$\\color{red}请不要收藏文章和题单！$\n\n## 已做好的\n\n> $8$ 倍经验\n> > [$8$ 倍经验 - $1$](https://www.luogu.com.cn/training/726850)\n> >\n\n## 总目录\n\n> 有时间的可以帮忙搞一下，如有其他的或要帮忙整题单请私信。\n\n### 1.\n- [P1908 逆序对](https://www.luogu.com.cn/problem/P1908)\n- [P1116 车厢重组](https://www.luogu.com.cn/problem/P1116)\n- [P1774 最接近神的人](https://www.luogu.com.cn/problem/P1774)\n- [INVCNT - Inversion Count](https://www.luogu.com.cn/problem/SP6256)\n- [CODESPTB - Insertion Sort](https://www.luogu.com.cn/problem/SP9722)\n- [BUBBLESORT - Bubble Sort](https://www.luogu.com.cn/problem/SP25784)\n- [転倒数](https://www.luogu.com.cn/problem/AT_chokudai_S001_j)\n- [Ultra-QuickSort](https://www.luogu.com.cn/problem/UVA10810)\n- [Train Swapping](https://www.luogu.com.cn/problem/UVA299)\n- [Flip Sort](https://www.luogu.com.cn/problem/UVA10327)\n\n### 2.\n- [P1835 素数密度](https://www.luogu.com.cn/problem/P1835)\n- [Prime Distance](https://www.luogu.com.cn/problem/UVA10140)\n- [PRINT - Prime Intervals](https://www.luogu.com.cn/problem/SP503)\n- [PRIME1 - Prime Generator](https://www.luogu.com.cn/problem/SP2)\n- [P3383 【模板】线性筛素数](https://www.luogu.com.cn/problem/P3383)\n\n### 3.\n- [团队分组 Team them up!](https://www.luogu.com.cn/problem/UVA1627)\n- [P1285 队员分组](https://www.luogu.com.cn/problem/P1285)\n\n### 4.\n- [P1048 [NOIP2005 普及组] 采药](https://www.luogu.com.cn/problem/P1048)\n- [P2871 [USACO07DEC]Charm Bracelet S](https://www.luogu.com.cn/problem/P2871)\n\n### 5.\n- [P1616 疯狂的采药](https://www.luogu.com.cn/problem/P1616)\n- [P2722 [USACO3.1]总分 Score Inflation](https://www.luogu.com.cn/problem/P2722)\n\n### 6.\n- [P1390 公约数的和](https://www.luogu.com.cn/problem/P1390)\n- [P1447 [NOI2010] 能量采集](https://www.luogu.com.cn/problem/P1447)\n- [P2158 [SDOI2008] 仪仗队](https://www.luogu.com.cn/problem/P2158)\n- [P2398 GCD SUM](https://www.luogu.com.cn/problem/P2398)\n- [P2568 GCD](https://www.luogu.com.cn/problem/P2568)\n- [GCDEX - GCD Extreme](https://www.luogu.com.cn/problem/SP3871)\n- [GCDEX2 - GCD Extreme (hard)](https://www.luogu.com.cn/problem/SP19985)\n- [GCD](https://www.luogu.com.cn/problem/UVA11417)\n- [GCD - Extreme (I)](https://www.luogu.com.cn/problem/UVA11424)\n- [拿行李（极限版） GCD - Extreme (II)](https://www.luogu.com.cn/problem/UVA11426)\n- [P2389 电脑班的裁员](https://www.luogu.com.cn/problem/P2389)\n\n### 7.\n- [B2001 入门测试题目](https://www.luogu.com.cn/problem/B2001)\n- [P1001 A+B Problem](https://www.luogu.com.cn/problem/P1001)\n- [B2007 A + B 问题](https://www.luogu.com.cn/problem/B2007)\n- [A + B Strikes Back](https://www.luogu.com.cn/problem/CF409H)\n\n### 8.\n- [P1969 [NOIP2013 提高组] 积木大赛](https://www.luogu.com.cn/problem/P1969)\n- [P3078 [USACO13MAR]Poker Hands S](https://www.luogu.com.cn/problem/P3078)\n- [P5019 [NOIP2018 提高组] 铺设道路](https://www.luogu.com.cn/problem/P5019)\n\n### 9.\n- [P1150 Peter 的烟](https://www.luogu.com.cn/problem/P1150)\n- [Peter's Smokes](https://www.luogu.com.cn/problem/UVA10346)\n- [New Year Candles](https://www.luogu.com.cn/problem/CF379A)\n\n### 10.\n- [P1904 天际线](https://www.luogu.com.cn/problem/P1904)\n- [The Skyline Problem](https://www.luogu.com.cn/problem/UVA105)\n\n### 11.\n- [P1403 [AHOI2005]约数研究](https://www.luogu.com.cn/problem/P1403)\n- [DIVCNT1 - Counting Divisors](https://www.luogu.com.cn/problem/SP26073)\n\n### 12.\n- [P2023 [AHOI2009] 维护序列](https://www.luogu.com.cn/problem/P2023)\n- [P3373 【模板】线段树 2](https://www.luogu.com.cn/problem/P3373)\n\n### 13.\n- [P1212 [USACO1.4]铺放矩形块 Packing Rectangles](https://www.luogu.com.cn/problem/P1212)\n- [P5917 [IOI1995]铺放矩形块](https://www.luogu.com.cn/problem/P5917)\n\n### 14.\n- [Chat room](https://www.luogu.com.cn/problem/CF58A)\n- [Fake News (easy)](https://www.luogu.com.cn/problem/CF802G)\n- [CF](https://www.luogu.com.cn/problem/AT_codefestival_2016_qualC_a)\n- [Can you get AC?](https://www.luogu.com.cn/problem/AT_code_festival_2017_qualc_a)\n\n### 15.\n- [P2602 [ZJOI2010] 数字计数](https://www.luogu.com.cn/problem/P2602)\n- [P4999 烦人的数学作业](https://www.luogu.com.cn/problem/P4999)\n- [MDIGITS - Counting Digits](https://www.luogu.com.cn/problem/SP3928)\n- [PR003004 - Digit Sum](https://www.luogu.com.cn/problem/SP17247)\n- [P1836 数页码](https://www.luogu.com.cn/problem/P1836)\n- [统计问题 The Counting Problem](https://www.luogu.com.cn/problem/UVA1640)\n\n### 16.\n- [P6476 [NOI Online #2 提高组] 涂色游戏](https://www.luogu.com.cn/problem/P6476)\n- [Infinite Fence](https://www.luogu.com.cn/problem/CF1260C)\n\n### 17.\n- [P2627 [USACO11OPEN]Mowing the Lawn G](https://www.luogu.com.cn/problem/P2627)\n- [P2034 选择数字](https://www.luogu.com.cn/problem/P2034)\n\n### 18.\n- [P7883 平面最近点对（加强加强版）](https://www.luogu.com.cn/problem/P7883)\n- [P1429 平面最近点对（加强版）](https://www.luogu.com.cn/problem/P1429)\n- [P1257 平面上的最接近点对](https://www.luogu.com.cn/problem/P1257)\n\n### 19.\n- [P2440 木材加工](https://www.luogu.com.cn/problem/P2440)\n- [P1577 切绳子](https://www.luogu.com.cn/problem/P1577)**(输入时先×100)**\n\n### 20.\n- [Spreading the Wealth](https://www.luogu.com.cn/problem/UVA11300)\n- [P1031 [NOIP2002 提高组] 均分纸牌](https://www.luogu.com.cn/problem/P1031)\n- [P3051 [USACO12MAR]Haybale Restacking G](https://www.luogu.com.cn/problem/P3051)\n- [P2512 [HAOI2008]糖果传递](https://www.luogu.com.cn/problem/P2512)\n- [P4016 负载平衡问题](https://www.luogu.com.cn/problem/P4016)\n- [P2125 图书馆书架上的书](https://www.luogu.com.cn/problem/P2125)\n- [RESTACK - Restacking haybales 2012](https://www.luogu.com.cn/problem/SP11117)\n\n### 21.\n- [P3902 递增](https://www.luogu.com.cn/problem/P3902)\n- [LIS](https://www.luogu.com.cn/problem/AT_chokudai_S001_h)\n\n### 22.\n- [P1090 [NOIP2004 提高组] 合并果子 / [USACO06NOV] Fence Repair G](https://www.luogu.com.cn/problem/P1090)\n- [P6033 [NOIP2004 提高组] 合并果子 加强版](https://www.luogu.com.cn/problem/P6033)\n\n### 23.\n- [P1114 “非常男女”计划](https://www.luogu.com.cn/problem/P1114)\n- [P2697 宝石串](https://www.luogu.com.cn/problem/P2697)\n- [Balanced Substring](https://www.luogu.com.cn/problem/CF873B)\n\n### 24.\n- [P1596 [USACO10OCT]Lake Counting S](https://www.luogu.com.cn/problem/P1596)\n- [油田 Oil Deposits](https://www.luogu.com.cn/problem/UVA572)\n\n### 25.\n- [P1194 买礼物](https://www.luogu.com.cn/problem/P1194)\n- [P1546 [USACO3.1]最短网络 Agri-Net](https://www.luogu.com.cn/problem/P1546)\n\n### 26.\n- [P1507 NASA的食物计划](https://www.luogu.com.cn/problem/P1507)\n- [P1910 L国的战斗之间谍](https://www.luogu.com.cn/problem/P1910)\n- [P1855 榨取kkksc03](https://www.luogu.com.cn/problem/P1855)\n- [P1794 装备运输](https://www.luogu.com.cn/problem/P1794)\n\n### 27.\n- [P2714 四元组统计](https://www.luogu.com.cn/problem/P2714)\n- [MSKYCODE - Sky Code](https://www.luogu.com.cn/problem/SP4191)\n\n### 28.\n- [BACKUP - Backup Files](https://www.luogu.com.cn/problem/SP1553)\n- [P3620 [APIO/CTSC2007] 数据备份](https://www.luogu.com.cn/problem/P3620)\n\n### 29.\n- [P3817 小A的糖果](https://www.luogu.com.cn/problem/P3817)\n- [[ABC048C] Boxes and Candies](https://www.luogu.com.cn/problem/AT_arc064_a)\n\n### 30.\n- [P1817 棋盘染色](https://www.luogu.com.cn/problem/P1817)\n- [P4537 [CQOI2007]矩形](https://www.luogu.com.cn/problem/P4537)\n- [P1790 矩形分割](https://www.luogu.com.cn/problem/P1790)\n\n### 31.\n- [P1404 平均数 ](https://www.luogu.com.cn/problem/P1404)\n- [平均值 Average](https://www.luogu.com.cn/problem/UVA1451)\n- [P7795 [COCI2014-2015#7] PROSJEK](https://www.luogu.com.cn/problem/P7795)\n\n### 32.\n- [P8586 星环防御工事](https://www.luogu.com.cn/problem/P8586)\n- [Valera and Fruits](https://www.luogu.com.cn/problem/CF441B)\n\n### 33.\n- [P2884 [USACO07MAR]Monthly Expense S](https://www.luogu.com.cn/problem/P2884)\n- [P1182 数列分段 Section II](https://www.luogu.com.cn/problem/P1182)\n\n### 34.\n- [P8638 [蓝桥杯 2016 省 A] 密码脱落](https://www.luogu.com.cn/problem/P8638)\n- [P1435 [IOI2000] 回文字串 / [蓝桥杯 2016 省] 密码脱落](https://www.luogu.com.cn/problem/P1435)\n\n### 35.\n- [P1256 显示图像](https://www.luogu.com.cn/problem/P1256)\n- [P2335 [SDOI2005]位图](https://www.luogu.com.cn/problem/P2335)\n\n### 36.\n- [P1250 种树](https://www.luogu.com.cn/problem/P1250)\n- [P1645 序列](https://www.luogu.com.cn/problem/P1645)\n- [P1986 元旦晚会](https://www.luogu.com.cn/problem/P1986)\n- [Intervals](https://www.luogu.com.cn/problem/UVA1723)\n- [INTERVAL - Intervals](https://www.luogu.com.cn/problem/SP116)\n\n### 37.\n- [P3396 哈希冲突](https://www.luogu.com.cn/problem/P3396)\n- [Remainder Problem](https://www.luogu.com.cn/problem/CF1207F)\n\n### 38.\n- [P1893 山峰暸望](https://www.luogu.com.cn/problem/P1893)\n- [P6181 [USACO10OPEN]Mountain Watching S\n](https://www.luogu.com.cn/problem/P6181)\n\n### 39.\n- [P4279 [SHOI2008] 小约翰的游戏](https://www.luogu.com.cn/problem/P4279)\n- [P2197 【模板】nim 游戏](https://www.luogu.com.cn/problem/P2197)\n- [John](https://www.luogu.com.cn/problem/UVA1566)\n\n### 40.\n- [Electricity](https://www.luogu.com.cn/problem/UVA12148)\n- [SAMER08E - Electricity](https://www.luogu.com.cn/problem/SP3409)\n\n### 41.\n- [小木棍 Sticks](https://www.luogu.com.cn/problem/UVA307)\n- [P1120 小木棍](https://www.luogu.com.cn/problem/P1120)\n\n### 42.\n- [P4331 [BalticOI 2004] Sequence 数字序列](https://www.luogu.com.cn/problem/P4331)\n- [Sequence](https://www.luogu.com.cn/problem/CF13C)\n- [P4597 序列 sequence](https://www.luogu.com.cn/problem/P4597)\n- [Sonya and Problem Wihtout a Legend](https://www.luogu.com.cn/problem/CF713C)\n- [P2893 [USACO08FEB] Making the Grade G](https://www.luogu.com.cn/problem/P2893)\n\n### 43.\n- [B2055 均值](https://www.luogu.com.cn/problem/B2055)\n- [B2054 求平均年龄](https://www.luogu.com.cn/problem/B2054)\n- [B2056 求整数的和与均值\n](https://www.luogu.com.cn/problem/B2056)\n\n### 44.\n- [CTGAME - City Game](https://www.luogu.com.cn/problem/SP277)\n- [City Game](https://www.luogu.com.cn/problem/UVA1330)\n- [P4147 玉蟾宫\n](https://www.luogu.com.cn/problem/P4147)\n- [P5943 [POI2002] 最大的园地\n](https://www.luogu.com.cn/problem/P5943)\n\n### 45.\n- [P8218 【深进1.例1】求区间和](https://www.luogu.com.cn/problem/P8218)\n- [B3612 【深进1.例1】求区间和](https://www.luogu.com.cn/problem/B3612)\n\n### 46.\n- [P5146 最大差值](https://www.luogu.com.cn/problem/P5146)\n- [Open Credit System](https://www.luogu.com.cn/problem/UVA11078)\n\n### 47.\n- [P2574 XOR的艺术](https://www.luogu.com.cn/problem/P2574)\n- [P3870 [TJOI2009] 开关](https://www.luogu.com.cn/problem/P3870)\n- [LITE - Light Switching](https://www.luogu.com.cn/problem/SP7259)\n- [P2846 [USACO08NOV] Light Switching G](https://www.luogu.com.cn/problem/P2846)\n- [P5057 [CQOI2006] 简单题](https://www.luogu.com.cn/problem/P5057)\n\n### 48.\n- [Built?](https://www.luogu.com.cn/problem/AT_arc076_b)\n- [P8074 [COCI 2009/2010 #7] SVEMIR](https://www.luogu.com.cn/problem/P8074)\n\n### 49.\n- [P2665 [USACO08FEB] Game of Lines S](https://www.luogu.com.cn/problem/P2665)\n- [LINES - Game of Lines](https://www.luogu.com.cn/problem/SP3184)\n\n### 50.\n- [P4170 [CQOI2007] 涂色](https://www.luogu.com.cn/problem/P4170)\n- [Clear the String](https://www.luogu.com.cn/problem/CF1132F)",
+                timestamp: "NAN",
+                id: "official-Snake 集团 N倍经验-NAN"
+            },
+        ];
 
         // 初始化文章数据
         if (!localStorage.getItem(ARTICLES_KEY)) {
@@ -1351,92 +1921,277 @@
 
         // 渲染文章列表
         function renderArticles() {
-            const articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
+            const userArticles = JSON.parse(localStorage.getItem(ARTICLES_KEY)) || [];
+            const allArticles = [...officialArticles, ...userArticles];
             const container = document.getElementById('articles-container');
             container.innerHTML = '';
 
-            if (articles.length === 0) {
-                container.innerHTML = '<p>暂无文章</p>';
-                return;
-            }
+            allArticles.forEach(article => {
+                const isOfficial = article.category === "官方";
+                const articleId = article.id;
 
-            articles.forEach((article, index) => {
-                const articleCard = document.createElement('div');
-                articleCard.className = 'article-card';
-                articleCard.innerHTML = `
-                    <h3>${article.title}</h3>
-                    <div class="article-meta">
-                        <span class="article-category">${article.category}</span>
-                        <span>发布于: ${new Date(article.timestamp).toLocaleString()}</span>
-                    </div>
-                    <div class="article-content">${article.content.substring(0, 100)}${article.content.length > 100 ? '...' : ''}</div>
-                    <div class="article-actions">
-                        <button class="luogu-btn view-article-btn" data-index="${index}">查看</button>
-                        <button class="luogu-btn edit-article-btn" data-index="${index}">编辑</button>
-                        <button class="luogu-btn delete-article-btn" data-index="${index}">删除</button>
-                    </div>
-                `;
-                container.appendChild(articleCard);
+                const card = document.createElement('div');
+                card.className = 'article-card';
+                if (isOfficial) card.classList.add('official');
+
+                card.innerHTML = `
+            <h3>${article.title}</h3>
+            <div class="article-meta">
+                <span class="article-category">${article.category}</span>
+                <span>发布于: ${new Date(article.timestamp).toLocaleString()}</span>
+                ${isOfficial ? '<span class="official-badge">官方</span>' : ''}
+            </div>
+            <div class="article-content">${article.content.substring(0, 100)}${article.content.length > 100 ? '...' : ''}</div>
+            <div class="article-actions">
+                <button class="luogu-btn view-article-btn" data-id="${articleId}">查看</button>
+                ${!isOfficial ? `
+                <button class="luogu-btn edit-article-btn" data-id="${articleId}">编辑</button>
+                <button class="luogu-btn delete-article-btn" data-id="${articleId}">删除</button>
+                ` : ''}
+                <button class="luogu-btn favorite-btn ${isFavorite(articleId) ? 'active' : ''}" data-id="${articleId}">
+                    ${isFavorite(articleId) ? '取消收藏' : '收藏'}
+                </button>
+            </div>
+        `;
+
+                container.appendChild(card);
             });
 
-            // 添加按钮事件
+            // 绑定事件
+            bindArticleEvents();
+        }
+
+        // 绑定文章事件
+        function bindArticleEvents() {
+            // 查看按钮
             document.querySelectorAll('.view-article-btn').forEach(btn => {
                 btn.addEventListener('click', function () {
-                    const index = parseInt(this.getAttribute('data-index')); // 确保正确获取 data-index
-                    const articles = JSON.parse(localStorage.getItem('snake_test_articles'));
-                    const article = articles[index];
-                    openSnakeArticleModal(article.title, article.content);
+                    const articleId = this.getAttribute('data-id');
+                    const allArticles = [...officialArticles, ...JSON.parse(localStorage.getItem(ARTICLES_KEY))];
+                    const article = allArticles.find(a => a.id === articleId);
+                    if (article) {
+                        openSnakeArticleModal(article.title, article.content, articleId);
+                    }
                 });
             });
 
+            // 收藏按钮
+            document.querySelectorAll('.favorite-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const articleId = this.getAttribute('data-id');
+                    if (toggleFavorite(articleId)) {
+                        renderArticles(); // 更新文章列表
+                    }
+                });
+            });
+
+            // 编辑按钮
             document.querySelectorAll('.edit-article-btn').forEach(btn => {
                 btn.addEventListener('click', function () {
-                    editArticle(parseInt(this.getAttribute('data-index')));
+                    const articleId = this.getAttribute('data-id');
+                    const articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
+                    const article = articles.find(a => a.id === articleId);
+                    if (article) {
+                        document.getElementById('article-title').value = article.title;
+                        document.getElementById('article-category').value = article.category;
+                        document.getElementById('article-content').value = article.content;
+
+                        // 标记当前正在编辑的文章索引
+                        document.getElementById('article-form').dataset.editingId = articleId;
+
+                        showArticleEditor();
+                    }
                 });
             });
 
+            // 删除按钮
             document.querySelectorAll('.delete-article-btn').forEach(btn => {
                 btn.addEventListener('click', function () {
-                    deleteArticle(parseInt(this.getAttribute('data-index')));
+                    const articleId = this.getAttribute('data-id');
+                    if (confirm('确定要删除这篇文章吗？')) {
+                        const articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
+                        const updatedArticles = articles.filter(a => a.id !== articleId);
+                        localStorage.setItem(ARTICLES_KEY, JSON.stringify(updatedArticles));
+                        renderArticles(); // 更新文章列表
+                    }
                 });
             });
         }
 
-        // 查看文章详情
+        // 修改openSnakeArticleModal调用
         function viewArticle(index) {
             const articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
             const article = articles[index];
-
-            // 这里可以弹出一个模态框显示完整文章内容
-            alert(`标题: ${article.title}\n分类: ${article.category}\n\n${article.content}`);
+            const articleId = `article-${Date.now()}`;
+            openSnakeArticleModal(article.title, article.content, false, articleId);
         }
 
         /**
- * 打开文章模态框（支持Markdown+KaTeX）
+ * 打开文章模态框（支持模态框和新标签页两种模式）
  * @param {string} title - 文章标题
- * @param {string} content - Markdown内容
+ * @param {string} content - Markdown格式内容
+ * @param {boolean} [inNewTab=false] - 是否在新标签页打开
  */
-        function openSnakeArticleModal(title, content) {
-            const modal = document.getElementById('snake-article-modal');
-            const titleElement = document.getElementById('snake-modal-article-title');
-            const contentElement = document.getElementById('snake-modal-article-content');
+        function openSnakeArticleModal(title, content, inNewTab = false) {
+            if (inNewTab) {
+                // 新标签页模式
+                const newWindow = window.open('', '_blank');
+                const htmlDoc = `<!DOCTYPE html>
+        <html lang="zh-CN">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>${escapeHtml(title)}</title>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+            <style>
+                /* 保持原有样式 */
+            </style>
+        </head>
+        <body>
+            <article>
+                <h1>${escapeHtml(title)}</h1>
+                <div id="article-content"></div>
+            </article>
 
-            // 设置标题和内容
-            titleElement.textContent = title;
-            contentElement.innerHTML = marked.parse(content || '');
+            <script src="https://cdn.jsdelivr.net/npm/marked@4.2.12/marked.min.js"><\/script>
+            <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"><\/script>
+            <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"><\/script>
+            
+            <script>
+                try {
+                    const content = \`${escapeJsString(content)}\`;
+                    
+                    marked.setOptions({
+                        breaks: false,
+                        gfm: true
+                    });
+                    
+                    document.getElementById('article-content').innerHTML = marked.parse(content);
+                    
+                    renderMathInElement(document.body, {
+                        delimiters: [
+                            { left: '$$', right: '$$', display: true },
+                            { left: '$', right: '$', display: false },
+                            { left: '\\\\(', right: '\\\\)', display: false },
+                            { left: '\\\\[', right: '\\\\]', display: true }
+                        ],
+                        throwOnError: false,
+                        output: 'mathml'
+                    });
+                    
+                } catch(e) {
+                    document.getElementById('article-content').innerHTML = 
+                        '<div style="color:red;padding:1em;border:1px solid #f00;">' +
+                        '内容渲染出错: ' + escapeHtml(e.message) + '</div>';
+                    console.error('文章渲染错误:', e);
+                }
+            <\/script>
+        </body>
+        </html>`;
 
-            // 渲染数学公式
-            renderMathInElement(contentElement, {
-                delimiters: [
-                    { left: '$$', right: '$$', display: true },
-                    { left: '$', right: '$', display: false }
-                ],
-                throwOnError: false
-            });
+                newWindow.document.open();
+                newWindow.document.write(htmlDoc);
+                renderMathInElement(htmlDoc.document.body, {
+                    delimiters: [
+                        { left: '$$', right: '$$', display: true },
+                        { left: '$', right: '$', display: false },
+                        { left: '\\\\(', right: '\\\\)', display: false },
+                        { left: '\\\\[', right: '\\\\]', display: true }
+                    ],
+                    throwOnError: false,
+                    output: 'mathml'
+                });
+                newWindow.document.close();
+            } else {
+                // 模态框模式
+                const modal = document.getElementById('snake-article-modal');
+                const titleElement = document.getElementById('snake-modal-article-title');
+                const contentElement = document.getElementById('snake-modal-article-content');
 
-            // 显示模态框
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // 禁止背景滚动
+                contentElement.innerHTML = marked.parse(content || '') + `
+        <div class="comments-section">
+            <h3>评论</h3>
+            <div id="comments-container-${articleId}"></div>
+            <div class="comment-form">
+                <textarea id="comment-input-${articleId}" placeholder="写下你的评论..."></textarea>
+                <button class="luogu-btn submit-comment" data-article="${articleId}">提交评论</button>
+            </div>
+        </div>
+    `;// 在模态框内容中添加评论区域
+
+                // 渲染评论
+                renderComments(articleId);
+
+                // 添加评论提交事件
+                document.querySelector(`.submit-comment[data-article="${articleId}"]`).addEventListener('click', function () {
+                    const content = document.getElementById(`comment-input-${articleId}`).value;
+                    if (addComment(articleId, content)) {
+                        document.getElementById(`comment-input-${articleId}`).value = '';
+                        renderComments(articleId);
+                    }
+                });
+
+
+                titleElement.textContent = title;
+                contentElement.innerHTML = marked.parse(content || '');
+
+                renderMathInElement(contentElement, {
+                    delimiters: [
+                        { left: '$$', right: '$$', display: true },
+                        { left: '$', right: '$', display: false }
+                    ],
+                    throwOnError: false
+                });
+
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        // 关闭模态框的函数
+        function closeSnakeArticleModal() {
+            document.getElementById('snake-article-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // 辅助函数：转义HTML特殊字符
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // 辅助函数：转义JavaScript字符串中的特殊字符
+        function escapeJsString(str) {
+            return str
+                .replace(/\\/g, '\\\\')
+                .replace(/`/g, '\\`')
+                .replace(/\$/g, '\\$')
+                .replace(/\n/g, '\\n')
+                .replace(/\r/g, '\\r');
+        }
+
+        // 转义HTML特殊字符
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // 转义JavaScript字符串中的特殊字符
+        function escapeJsString(str) {
+            return str
+                .replace(/\\/g, '\\\\')
+                .replace(/`/g, '\\`')
+                .replace(/\$/g, '\\$')
+                .replace(/\n/g, '\\n')
+                .replace(/\r/g, '\\r');
         }
 
         /**
@@ -1493,32 +2248,44 @@
             const category = document.getElementById('article-category').value;
             const content = window.articleEditor.value();
 
-            const articles = JSON.parse(localStorage.getItem(ARTICLES_KEY));
+            const articles = JSON.parse(localStorage.getItem(ARTICLES_KEY)) || [];
 
             if (this.dataset.editingIndex !== undefined) {
                 // 编辑现有文章
                 const index = parseInt(this.dataset.editingIndex);
                 articles[index] = {
+                    id: articles[index].id, // 保持原有ID不变
                     title,
                     category,
                     content,
                     timestamp: articles[index].timestamp
                 };
-                delete this.dataset.editingIndex;
             } else {
                 // 添加新文章
+                const timestamp = new Date().toISOString();
+                // 在保存文章时生成固定ID
                 articles.push({
+                    id: `article-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`, // 唯一 ID
                     title,
                     category,
                     content,
-                    timestamp: new Date().toISOString()
+                    timestamp
                 });
             }
 
             localStorage.setItem(ARTICLES_KEY, JSON.stringify(articles));
-            alert('文章已保存！');
             showArticleList();
         });
+
+        // 修改官方文章的 ID 格式
+        officialArticles.forEach(article => {
+            if (!article.id.startsWith('article-')) {
+                article.id = `article-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+            }
+        });
+
+        // 将修改后的官方文章存储到 localStorage（如果需要）
+        localStorage.setItem('officialArticles', JSON.stringify(officialArticles));
 
         // 按钮事件
         newArticleBtn.addEventListener('click', showArticleEditor);
@@ -1541,7 +2308,7 @@
                     }
                     return hljs.highlightAuto(code).value;
                 },
-                breaks: true,
+                breaks: false,
                 gfm: true
             });
 
@@ -2466,7 +3233,7 @@ int kruskal(vector<Edge>& edges, int n) {
                 author: "约翰·伍德"
             },
             {
-                text: "请注意，在‘现实世界’里，演讲者的诉求永远是听众不要挑战其默认的假设条件。",
+                text: "请注意，在'现实世界'里，演讲者的诉求永远是听众不要挑战其默认的假设条件。",
                 author: "艾兹格·W·迪科斯彻"
             },
             {
@@ -2506,7 +3273,7 @@ int kruskal(vector<Edge>& edges, int n) {
                 author: "拉尔夫•马斯顿"
             },
             {
-                text: "数学家是现代化世界的‘主人’。",
+                text: "数学家是现代化世界的'主人'。",
                 author: "比尔•盖茨"
             },
             {
@@ -2514,6 +3281,17 @@ int kruskal(vector<Edge>& edges, int n) {
                 author: "拉海尔•法鲁克"
             }
         ];
+
+        // 添加新标签页按钮事件
+        document.querySelectorAll('.view-newtab-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const index = parseInt(this.getAttribute('data-index'));
+                const isOfficial = this.getAttribute('data-official') === 'true';
+                const articles = isOfficial ? officialArticles : JSON.parse(localStorage.getItem(ARTICLES_KEY));
+                const article = articles[isOfficial ? index : index - officialArticles.length];
+                openSnakeArticleModal(article.title, article.content, true);
+            });
+        });
 
         function renderLearningResources() {
             const container = document.getElementById('resources-list');
@@ -2917,11 +3695,93 @@ int kruskal(vector<Edge>& edges, int n) {
             window.open('https://zhangyimin12345.github.io/snake-test-2-markdown/', '_blank');
         });
 
+        document.getElementById('editor-link').addEventListener('click', function () {
+            window.open('https://wbwdxh.github.io/code.html', '_blank');
+        });
+
         // 初始化
         updateTime();
         setInterval(updateTime, 1000);
         showRandomQuote();
         setInterval(showRandomQuote, 12000); // 更换名言
+
+        // 设置功能
+        document.addEventListener('DOMContentLoaded', function () {
+            // 从本地存储加载设置
+            const settings = {
+                waveEffect: localStorage.getItem('waveEffect') !== 'false',
+                snowEffect: localStorage.getItem('snowEffect') !== 'false',
+                showQuotes: localStorage.getItem('showQuotes') !== 'false'
+            };
+
+            // 初始化开关状态
+            document.getElementById('wave-effect-toggle').checked = settings.waveEffect;
+            document.getElementById('snow-effect-toggle').checked = settings.snowEffect;
+            document.getElementById('quote-toggle').checked = settings.showQuotes;
+
+            // 根据设置加载效果
+            if (settings.waveEffect) {
+                loadScript('https://api.vvhan.com/api/script/bolang');
+            }
+
+            if (settings.snowEffect) {
+                loadScript('https://api.vvhan.com/api/script/snow');
+            }
+
+            if (!settings.showQuotes) {
+                document.getElementById('quote-container').style.display = 'none';
+            }
+
+            // 监听开关变化
+            document.getElementById('wave-effect-toggle').addEventListener('change', function () {
+                const enabled = this.checked;
+                localStorage.setItem('waveEffect', enabled);
+                if (enabled) {
+                    loadScript('https://api.vvhan.com/api/script/bolang');
+                } else {
+                    // 无法直接移除波浪效果，可以刷新页面
+                    alert('波浪效果设置将在刷新页面后生效');
+                }
+            });
+
+            document.getElementById('snow-effect-toggle').addEventListener('change', function () {
+                const enabled = this.checked;
+                localStorage.setItem('snowEffect', enabled);
+                if (enabled) {
+                    loadScript('https://api.vvhan.com/api/script/snow');
+                } else {
+                    // 无法直接移除雪花效果，可以刷新页面
+                    alert('雪花效果设置将在刷新页面后生效');
+                }
+            });
+
+            document.getElementById('quote-toggle').addEventListener('change', function () {
+                const enabled = this.checked;
+                localStorage.setItem('showQuotes', enabled);
+                document.getElementById('quote-container').style.display = enabled ? 'block' : 'none';
+            });
+        });
+        // 加载动画控制
+        function showLoader() {
+            const loader = document.getElementById('loader');
+            loader.style.display = 'flex';
+            loader.style.opacity = '1';
+        }
+
+        function fadeOutLoader() {
+            const loader = document.getElementById('loader');
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 100);
+        }
+
+        // 页面加载完成后隐藏加载动画
+        window.addEventListener('load', function () {
+            setTimeout(fadeOutLoader, 100); // 延迟500毫秒隐藏以确保所有内容加载完成
+        });
+
+        window.myloader = { show: showLoader, hide: fadeOutLoader };
     </script>
 </body>
 
