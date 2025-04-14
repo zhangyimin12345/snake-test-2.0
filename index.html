@@ -614,7 +614,7 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
             /* 半透明背景 */
-            z-index: 1000;
+            z-index: 100000;
             /* 确保模态框在最上层 */
         }
 
@@ -1154,6 +1154,17 @@
             display: block;
         }
     </style>
+
+    <style id="comments-style">
+        #comments-1 {
+            display: none;
+        }
+
+        #comments-2 {
+            display: block;
+        }
+    </style>
+
     <!-- 引入必要的CSS库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
@@ -1259,31 +1270,33 @@
             </div>
         </div>
 
-        <div class="content">
-            <!-- Welcome模态框 -->
-            <div id="welcomeModal" class="modalwelcome">
-                <div class="modalwelcome-content">
-                    <span class="closewelcome-btn">&times;</span>
-                    <div class="welcome-box">
-                        <h1>Welcome!</h1>
-                        <h3>欢迎来到Snake-test 2.9！本网站由zhangyimin12345 &amp; wbw121124制作，供snake集团成员使用。</h3>
-                        <h3>用于作者们是HTML辣鸡，有什么建议欢迎提出！</h3>
-                        <h3>本网站的主要功能都在侧边栏里，你可以点击查看。推荐用暗色主题。</h3>
-                        <h3>注：因为没有后端，切换浏览器、电脑所有数据都会清除！！！</h3>
-                        <h3>注：随手记即Markdown编辑器。</h3>
-                        <h3>注：文章功能炸了。</h3>
-                        <h3>注：小游戏·跑酷炸了，还没修好。有些地方缺斤少两，慢慢修吧。</h3>
-                        <h3>注：有些东西处于试验阶段、未补充资源或未调用API。</h3>
-                        <h3>鸣谢：wbw121124提供了编辑器功能。</h3>
-                    </div>
+        <!-- Welcome模态框 -->
+        <div id="welcomeModal" class="modalwelcome">
+            <div class="modalwelcome-content">
+                <span class="closewelcome-btn">&times;</span>
+                <div class="welcome-box">
+                    <h1>Welcome!</h1>
+                    <h3>欢迎来到Snake-test 2.9！本网站由zhangyimin12345 &amp; wbw121124制作，供snake集团成员使用。</h3>
+                    <h3>用于作者们是HTML辣鸡，有什么建议欢迎提出！</h3>
+                    <h3>本网站的主要功能都在侧边栏里，你可以点击查看。推荐用暗色主题。</h3>
+                    <h3>注：因为没有后端，切换浏览器、电脑所有数据都会清除！！！</h3>
+                    <h3>注：随手记即Markdown编辑器。</h3>
+                    <h3>注：文章功能炸了。</h3>
+                    <h3>注：小游戏·跑酷炸了，还没修好。有些地方缺斤少两，慢慢修吧。</h3>
+                    <h3>注：有些东西处于试验阶段、未补充资源或未调用API。</h3>
+                    <h3>鸣谢：wbw121124提供了编辑器功能，讨论板块也借鉴了他的代码。</h3>
                 </div>
             </div>
+        </div>
 
+        <div class="content">
             <div id="discussion-section" class="discussion-section">
+                <h1>讨论</h1>
+                <h3>目前只支持反馈问题！！！</h3>
                 <main id="test-snake-chat"> <span
                         style="display: inline-flex; flex-direction: row; flex-wrap: nowrap; align-content: flex-start; justify-content: flex-start; margin: 0; padding: 0; align-items: center; background-color: #F6F8FA; box-sizing: border-box; border-radius: .375rem; border-color: #d0d7de; border: 0 solid !important;">
-                        <button id="utteranc-btn" onclick="showchatbox(1)" class="btn1"> utteranc </button> <button
-                            id="giscus-btn" onclick="showchatbox(2)" class="btn1 clicked"> giscus </button>
+                        <button id="utteranc-btn" onclick="showchatbox(1)" class="luogu-btn"> utteranc </button> <button
+                            id="giscus-btn" onclick="showchatbox(2)" class="luogu-btn"> giscus </button>
                         <script> function showchatbox(x) { if (x == 2) { document.getElementById("comments-style").innerHTML = `#comments-1 { display: none; } #comments-2 { display: block; }`; document.getElementById("giscus-btn").classList.add("clicked"); document.getElementById("utteranc-btn").classList.add("clicked"); document.getElementById("utteranc-btn").classList.remove("clicked"); } else { document.getElementById("comments-style").innerHTML = `#comments-2 { display: none; } #comments-1 { display: block; }`; document.getElementById("utteranc-btn").classList.add("clicked"); document.getElementById("giscus-btn").classList.add("clicked"); document.getElementById("giscus-btn").classList.remove("clicked"); } } </script>
                     </span>
                     <div id="comments-1">
@@ -1534,7 +1547,7 @@
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
     <script src="https://cdn.staticfile.net/highlight.js/11.7.0/highlight.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.js"></script>
-    <script>(() => { const canvas = document.createElement('canvas'); document.body.appendChild(canvas); canvas.style = "display: block;position: fixed;top: 0;left: 0;pointer-events: none;"; const ctx = canvas.getContext('2d'); function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight } resizeCanvas(); window.addEventListener('resize', () => { resizeCanvas() }); const gravity = 0.5; const damping = 0.8; const ballRadius = 7.5; let balls = []; class Ball { constructor(x, y, radius) { this.x = x; this.y = y; this.cnt = 0; this.radius = radius * (Math.random() + 0.75); this.vx = (Math.random() - 0.5) * 12.5; this.vy = (Math.random() * 2 - 1.25) * 10; this.mass = radius * 0.5; this.color = `hsl(${Math.random() * 360},70%,50%)`; this.tot = 0; this.type = Math.random() > 0.5 } update() { this.vy += gravity; this.x += this.vx; this.y += this.vy; let last = this.tot; if (this.x < this.radius) { this.vx *= -damping; this.x = this.radius; this.tot++ } if (this.x > canvas.width - this.radius) { this.vx *= -damping; this.x = canvas.width - this.radius; this.tot++ } if (this.y < this.radius) { this.vy *= -damping; this.y = this.radius; this.tot++ } if (this.y > canvas.height - this.radius) { this.vy *= -damping; this.y = canvas.height - this.radius; this.tot++ } last = this.tot - last; if (last > 0) this.radius = this.radius * 7 / 8 } draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.fill(); ctx.closePath() } } function checkCollisions() { for (let i = 0; i < balls.length; i++) { for (let j = i + 1; j < balls.length; j++) { const ball1 = balls[i]; const ball2 = balls[j]; const dx = ball2.x - ball1.x; const dy = ball2.y - ball1.y; const distance = Math.sqrt(dx * dx + dy * dy); if (distance < ball1.radius + ball2.radius) { const nx = dx / distance; const ny = dy / distance; const dvx = ball2.vx - ball1.vx; const dvy = ball2.vy - ball1.vy; const dotProduct = dvx * nx + dvy * ny; if (dotProduct >= 0) continue; const impulse = (-(1 + damping) * dotProduct) / (1 / ball1.mass + 1 / ball2.mass); ball1.vx -= (impulse * nx) / ball1.mass; ball1.vy -= (impulse * ny) / ball1.mass; ball2.vx += (impulse * nx) / ball2.mass; ball2.vy += (impulse * ny) / ball2.mass; const overlap = (ball1.radius + ball2.radius - distance) / 2; ball1.x -= nx * overlap; ball1.y -= ny * overlap; ball2.x += nx * overlap; ball2.y += ny * overlap } } } } function init() { for (let i = 0; i < 10; i++) { balls.push(new Ball(Math.random() * (canvas.width - 2 * ballRadius) + ballRadius, Math.random() * (canvas.height - 2 * ballRadius) + ballRadius, ballRadius)) } } function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); balls.forEach(ball => { ball.cnt++; ball.update(); ball.draw() }); for (let i = 0; i < balls.length; i++) { if ((balls[i].cnt > 10000 || balls[i].radius < 0.01) && balls.length > 5) { balls.splice(i, 1); i-- } } while (balls.length > 25) { balls.splice(0, 1) } checkCollisions(); requestAnimationFrame(animate) } document.addEventListener('click', (e) => { for (let i = 0; i < 5; i++) { balls.push(new Ball(e.clientX, e.clientY, ballRadius)) } }); init(); animate() })();</script>
+    <!-- <script>(() => { const canvas = document.createElement('canvas'); document.body.appendChild(canvas); canvas.style = "display: block;position: fixed;top: 0;left: 0;pointer-events: none;"; const ctx = canvas.getContext('2d'); function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight } resizeCanvas(); window.addEventListener('resize', () => { resizeCanvas() }); const gravity = 0.5; const damping = 0.8; const ballRadius = 7.5; let balls = []; class Ball { constructor(x, y, radius) { this.x = x; this.y = y; this.cnt = 0; this.radius = radius * (Math.random() + 0.75); this.vx = (Math.random() - 0.5) * 12.5; this.vy = (Math.random() * 2 - 1.25) * 10; this.mass = radius * 0.5; this.color = `hsl(${Math.random() * 360},70%,50%)`; this.tot = 0; this.type = Math.random() > 0.5 } update() { this.vy += gravity; this.x += this.vx; this.y += this.vy; let last = this.tot; if (this.x < this.radius) { this.vx *= -damping; this.x = this.radius; this.tot++ } if (this.x > canvas.width - this.radius) { this.vx *= -damping; this.x = canvas.width - this.radius; this.tot++ } if (this.y < this.radius) { this.vy *= -damping; this.y = this.radius; this.tot++ } if (this.y > canvas.height - this.radius) { this.vy *= -damping; this.y = canvas.height - this.radius; this.tot++ } last = this.tot - last; if (last > 0) this.radius = this.radius * 7 / 8 } draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.fill(); ctx.closePath() } } function checkCollisions() { for (let i = 0; i < balls.length; i++) { for (let j = i + 1; j < balls.length; j++) { const ball1 = balls[i]; const ball2 = balls[j]; const dx = ball2.x - ball1.x; const dy = ball2.y - ball1.y; const distance = Math.sqrt(dx * dx + dy * dy); if (distance < ball1.radius + ball2.radius) { const nx = dx / distance; const ny = dy / distance; const dvx = ball2.vx - ball1.vx; const dvy = ball2.vy - ball1.vy; const dotProduct = dvx * nx + dvy * ny; if (dotProduct >= 0) continue; const impulse = (-(1 + damping) * dotProduct) / (1 / ball1.mass + 1 / ball2.mass); ball1.vx -= (impulse * nx) / ball1.mass; ball1.vy -= (impulse * ny) / ball1.mass; ball2.vx += (impulse * nx) / ball2.mass; ball2.vy += (impulse * ny) / ball2.mass; const overlap = (ball1.radius + ball2.radius - distance) / 2; ball1.x -= nx * overlap; ball1.y -= ny * overlap; ball2.x += nx * overlap; ball2.y += ny * overlap } } } } function init() { for (let i = 0; i < 10; i++) { balls.push(new Ball(Math.random() * (canvas.width - 2 * ballRadius) + ballRadius, Math.random() * (canvas.height - 2 * ballRadius) + ballRadius, ballRadius)) } } function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); balls.forEach(ball => { ball.cnt++; ball.update(); ball.draw() }); for (let i = 0; i < balls.length; i++) { if ((balls[i].cnt > 10000 || balls[i].radius < 0.01) && balls.length > 5) { balls.splice(i, 1); i-- } } while (balls.length > 25) { balls.splice(0, 1) } checkCollisions(); requestAnimationFrame(animate) } document.addEventListener('click', (e) => { for (let i = 0; i < 5; i++) { balls.push(new Ball(e.clientX, e.clientY, ballRadius)) } }); init(); animate() })();</script> -->
     <script>
         // 主题切换功能
         const themeToggle = document.getElementById('theme-toggle');
